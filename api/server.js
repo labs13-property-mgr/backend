@@ -1,11 +1,16 @@
-const express = require("express");
+const express = require('express');
 const configureMiddleware = require('./middleware/serverSetup');
+
+const tenantRouter = require('../tenant/tenant-router.js');
+// const propertyRouter = require('../property/property-router');
 
 const server = express();
 configureMiddleware(server);
 
-server.get("/", async (req, res) => {
-  res.status(200).json({ message: "Server running...." });
+server.use('/api/tenant', tenantRouter);
+
+server.get('/', async (req, res) => {
+	res.status(200).json({ message: 'Server running....' });
 });
 
-module.exports = server
+module.exports = server;

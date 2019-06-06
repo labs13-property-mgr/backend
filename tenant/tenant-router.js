@@ -1,0 +1,23 @@
+const router = require('express').Router();
+const Db = require('./tenant-model');
+
+// router.get('/', async (req, res) => {
+// 	try {
+// 		const tenant = await Db.find(req.query);
+// 	} catch (error) {
+// 		console.log(error);
+// 		res.status(500).json(error.message);
+// 	}
+// });
+
+router.post('/', async (req, res) => {
+	try {
+		const tenant = await Db.add(req.body);
+		res.status(201).json(tenant);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error.message);
+	}
+});
+
+module.exports = router;
