@@ -28,8 +28,9 @@
 	"dependencies": {
 		"cors": "^2.8.5",
 		"express": "^4.16.4",
+		"firebase": "^6.0.4",
 		"helmet": "^3.18.0",
-		"morgan": "^1.9.1",
-		"firebase": "^6.0.4"
+		"knex": "^0.17.3",
+		"morgan": "^1.9.1"
 	}
 }
