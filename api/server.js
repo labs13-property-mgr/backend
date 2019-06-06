@@ -5,7 +5,7 @@ const server = express()
 configureMiddleware(server)
 
 server.get('/', async (req, res) => {
-  res.status(200).json({ message: 'Server running....' })
+  await res.status(200).json({ message: 'Server running....' })
 })
 
 module.exports = server
