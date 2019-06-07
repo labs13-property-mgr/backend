@@ -1,20 +1,19 @@
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('users')
-    .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex('users').insert([
-        {
-          username: 'auser',
-          password: 'pass1233444',
-          First_name: 'jimbob',
-          Last_name: 'Jones',
-          phone: 3844884848,
-          email: 'jimbob@aol.com',
-          address: '222 West Main St',
-          role: 'landlord'
-        }
-      ])
+  const faker = require('faker')
+  const fakerData = []
+  for (let i = 0; i <= 50; i++) {
+    fakerData.push({
+      username: faker.internet.userName(),
+      password: faker.internet.password(),
+      First_name: faker.name.firstName(),
+      Last_name: faker.name.lastName(),
+      phone: faker.phone.phoneNumber(),
+      email: faker.internet.email(),
+      address: faker.address.streetAddress(true),
+      role: i % 2 === 0 ? 'tenant' : 'landlord'
     })
+  }
+  return knex('users')
+    .truncate()
+    .then(() => knex('users').insert(fakerData))
 }

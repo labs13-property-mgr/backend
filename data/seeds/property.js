@@ -1,11 +1,18 @@
 exports.seed = function(knex, Promise) {
-  // Deletes ALL existing entries
-  return knex('property')
-    .del()
-    .then(function() {
-      // Inserts seed entries
-      return knex('property').insert([
-        { property_name: 'mansiona', address: '333 main st' }
-      ])
+  const faker = require('faker')
+  const arrFaker = []
+  for (let i = 0; i <= 50; i++) {
+    const name = faker.hacker.adjective().replace(/\s|-/g, '')
+    const name1 = faker.hacker.ingverb()
+    arrFaker.push({
+      property_name:
+        i % 2 === 0
+          ? `${name.charAt(0).toUpperCase() + name.slice(1)} Manor`
+          : `${name.charAt(0).toUpperCase() + name.slice(1)} House`,
+      address: faker.address.streetAddress(true)
     })
+  }
+  return knex('property')
+    .truncate()
+    .then(() => knex('property').insert(arrFaker))
 }
