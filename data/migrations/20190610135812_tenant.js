@@ -1,6 +1,6 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable("tenant", tenant => {
-    tenant.incerements();
+    tenant.increments();
 
     tenant.string("name", 100).notNullable();
 
