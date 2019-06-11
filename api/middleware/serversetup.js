@@ -1,13 +1,15 @@
-const express = require('express')
-const helmet = require('helmet')
-const cors = require('cors')
-const userRouter = require('../routes/user-router')
-const propertyRouter = require('../routes/property-router')
+const express = require('express');
+const helmet = require('helmet');
+const cors = require('cors');
+const userRouter = require('../routes/user-router');
+const propertyRouter = require('../routes/property-router');
+const ownerRouter = require('../routes/owner-router');
 
-module.exports = server => {
-  server.use(helmet())
-  server.use(express.json())
-  server.use(cors())
-  server.use('/api/users', userRouter)
-  server.use('/api/properties', propertyRouter)
-}
+module.exports = (server) => {
+	server.use(helmet());
+	server.use(express.json());
+	server.use(cors());
+	server.use('/api/users', userRouter);
+	server.use('/api/properties', propertyRouter);
+	server.use('/api/owner', ownerRouter);
+};

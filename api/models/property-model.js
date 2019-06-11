@@ -1,24 +1,32 @@
-const knex = require('knex')
-const config = require('../../knexfile.js')
-const db = knex(config.development)
+const knex = require('knex');
+const config = require('../../knexfile.js');
+const db = knex(config.development);
 
 module.exports = {
-  add,
-  find,
-  findById
-}
+	add,
+	find,
+	findById,
+	remove,
+	update
+};
 
 async function add(property) {
-  const [id] = await db('property').insert(property)
-  return findById(id)
+	const [ id ] = await db('property').insert(property);
+	return findById(id);
 }
 
 function find() {
-  return db('property')
+	return db('property');
 }
 
 function findById(id) {
-  return db('property')
-    .where({ id })
-    .first()
+	return db('property').where({ id }).first();
+}
+
+function remove(id) {
+	return db('property').where({ id }).del();
+}
+
+function update(id, changes) {
+	return db('property').where({ id }).update(changes);
 }
