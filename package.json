@@ -24,7 +24,6 @@
 	"homepage": "https://github.com/labs13-property-mgr/backend#readme",
 	"devDependencies": {
 		"cross-env": "^5.2.0",
-		"knex-cleaner": "^1.1.4",
 		"nodemon": "^1.19.1",
 		"supertest": "^3.3.0"
 	},
@@ -38,6 +37,7 @@
 		"helmet": "^3.18.0",
 		"jsonwebtoken": "^8.5.1",
 		"knex": "^0.17.5",
+		"knex-cleaner": "^1.1.4",
 		"morgan": "^1.9.1",
 		"pg": "^7.11.0",
 		"sqlite3": "^4.0.8"
