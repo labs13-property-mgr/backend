@@ -7,7 +7,8 @@ module.exports = {
 	find,
 	findById,
 	remove,
-	update
+	update,
+	addTenant
 };
 
 async function add(property) {
@@ -29,4 +30,8 @@ function remove(id) {
 
 function update(id, changes) {
 	return db('property').where({ id }).update(changes);
+}
+
+async function addTenant(tenant) {
+	const [ id ] = await db('tenant').insert(tenant);
 }

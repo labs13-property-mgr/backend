@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const Db = require('../models/property-model');
 
+// get list of properties
 router.get('/', async (req, res) => {
 	try {
 		const property = await Db.find();
@@ -11,6 +12,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
+// get property by ID
 router.get('/:id', async (req, res) => {
 	try {
 		const property = await Db.findById(req.params.id);
@@ -25,6 +27,7 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
+// post a property
 router.post('/', async (req, res) => {
 	try {
 		const property = await Db.add(req.body);
@@ -35,6 +38,19 @@ router.post('/', async (req, res) => {
 	}
 });
 
+// add a tenant to a property
+router.post('/:id/tenants', async (req, res) => {
+	const tenantInfo = { ...req.body, property_id: req.params.id };
+	try {
+		const tenant = await Db.addTenant(tenantInfo);
+		res.status(200).json(tenant);
+	} catch (error) {
+		console.log(error);
+		res.status(500).json(error.message);
+	}
+});
+
+// edit the property
 router.put('/:id', async (req, res) => {
 	try {
 		const updated = await Db.update(req.params.id, req.body);
@@ -48,6 +64,7 @@ router.put('/:id', async (req, res) => {
 	}
 });
 
+// delete a property
 router.delete('/:id', async (req, res) => {
 	try {
 		const count = await Db.remove(req.params.id);
