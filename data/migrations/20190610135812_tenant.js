@@ -19,7 +19,9 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.dropTableIfExists("tenant");
+
+  return knex.schema.dropTableIfExists('tenant')
+
 };
 
 // Tenant Name, Spouse Name, Additional Adult Name, Number in Household, Child (first name),
