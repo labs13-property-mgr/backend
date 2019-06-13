@@ -27,7 +27,6 @@ router.post("/", (req, res) => {
 });
 
 // update a service order
-
 router.put("/:id", (req, res) => {
   db("service_orders")
     .where({ id: req.params.id })
@@ -45,7 +44,6 @@ router.put("/:id", (req, res) => {
 });
 
 // delete a service order
-
 router.delete("/:id", (req, res) => {
   db("service_orders")
     .where({ id: req.params.id })
