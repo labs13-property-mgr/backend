@@ -34,7 +34,7 @@ router.get("/:id", (req, res) => {
 });
 
 //=====================================User Property routes
-//--------------------get property by user id
+//--------------------get propertyies by user id
 router.get("/:id/properties", async (req, res) => {
   const user_id = req.params.id;
   db
@@ -56,7 +56,7 @@ router.get("/:id/properties", async (req, res) => {
         .json({ message: `The properties seems to be lost try again` });
     });
 });
-//--------------------post property by user id
+//--------------------get single property by user id
 
 
 module.exports = router
