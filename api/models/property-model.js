@@ -3,8 +3,7 @@ const db = require("../../data/dbConfig.js");
 module.exports = {
   add,
   find,
-  findById,
-  findByUser
+  findById
 }
 
 async function add(property) {
@@ -20,8 +19,4 @@ function findById(id) {
   return db('property')
     .where({ id })
     .first()
-}
-
-async function findByUser(user_id) {
-  return await db('property').where({user_id})
 }

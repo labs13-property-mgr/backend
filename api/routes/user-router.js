@@ -2,7 +2,6 @@ const express = require('express')
 const router = express.Router()
 
 const db = require('../models/user-model')
-const propDB = require('../models/property-model')
 
 //=====================================Generic Get all users
 router.get('/', async (req, res) => {
@@ -38,8 +37,8 @@ router.get("/:id", (req, res) => {
 //--------------------get property by user id
 router.get("/:id/properties", async (req, res) => {
   const user_id = req.params.id;
-  propDB
-    .findByUser(user_id)
+  db
+    .findPropByUser(user_id)
     .then(properties => {
       if (properties) {
         res.status(200).json(properties);
