@@ -3,7 +3,8 @@ const db = require("../../data/dbConfig.js");
 module.exports = {
   add,
   find,
-  findById
+  findById,
+  getTenantsByPropId
 }
 
 async function add(property) {
@@ -19,4 +20,9 @@ function findById(id) {
   return db('property')
     .where({ id })
     .first()
+}
+
+function getTenantsByPropId(PropId) {
+  return db("tenants")
+      .where({ PropId })
 }
