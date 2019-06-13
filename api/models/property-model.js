@@ -4,9 +4,7 @@ module.exports = {
 	add,
 	find,
 	findById,
-	remove,
-	update,
-	addTenant
+	getTenantsByPropId
 };
 
 async function add(property) {
@@ -32,4 +30,8 @@ function update(id, changes) {
 
 async function addTenant(tenant) {
 	const [ id ] = await db('tenant').insert(tenant);
+}
+
+function getTenantsByPropId(PropId) {
+	return db('tenants').where({ PropId });
 }
