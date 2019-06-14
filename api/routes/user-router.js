@@ -13,7 +13,7 @@ const gcconfig = {
   keyFilename: ''
 }
 
-// const gcs = require('@google-cloud/storage')(gcconfig)
+const gcs = require('@google-cloud/storage')(gcconfig)
 const db = require('../models/user-model')
 
 //=====================================Generic Get all users
@@ -28,40 +28,38 @@ router.get('/', async (req, res) => {
   }
 })
 
-// module.exports = router
+module.uploadFile = functions.https.onRequest(async (req, res) => {
+  cors((req, res) => {
+    const busboy = new busboy({ headers: req.headers })
+    let uploadDate = mull
 
-// module.uploadFile = functions.https.onRequest(async (req, res) => {
-//   cors((req, res) => {
-//     const busboy = new busboy({ headers: req.headers })
-//     let uploadDate = mull
+    busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+      const filepath = path.join(os.tmpdir(), filename)
+      uploadDate = { file: filepath, type: mimetype }
+      file.pipe(fs.createWriteStream(filepath))
+    })
 
-//     busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
-//       const filepath = path.join(os.tmpdir(), filename)
-//       uploadDate = { file: filepath, type: mimetype }
-//       file.pipe(fs.createWriteStream(filepath))
-//     })
-
-//     busboy.on('finish', () => {
-//       const bucket = gcs.bucket()
-//       bucket
-//         .upload(uploadData.file, {
-//           uploadType: 'media',
-//           metadata: {
-//             metadata: {
-//               contentType: uploadData.type
-//             }
-//           }
-//         })
-//         .then(() => {
-//           res.send(200).json({ message: 'It works!' })
-//         })
-//         .catch(err => {
-//           res.status(500).json({ error: err })
-//         })
-//     })
-//     busboy.end(req.rawBody)
-//   })
-// })
+    busboy.on('finish', () => {
+      const bucket = gcs.bucket()
+      bucket
+        .upload(uploadData.file, {
+          uploadType: 'media',
+          metadata: {
+            metadata: {
+              contentType: uploadData.type
+            }
+          }
+        })
+        .then(() => {
+          res.send(200).json({ message: 'It works!' })
+        })
+        .catch(err => {
+          res.status(500).json({ error: err })
+        })
+    })
+    busboy.end(req.rawBody)
+  })
+})
 //--------------------get user by id
 router.get('/:id', (req, res) => {
   const user_id = req.params.id

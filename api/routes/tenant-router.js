@@ -1,4 +1,5 @@
-const router = require('express').Router()
+const express = require('express')
+const router = express.Router()
 const Db = require('../models/tenant-model')
 
 router.get('/', async (req, res) => {
