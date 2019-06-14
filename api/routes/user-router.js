@@ -1,17 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const cors = require('cors')({ origin: true })
-const functions = require('firebase-functions')
-const busboy = require('busboy')
-const path = require('path')
-const os = require('os')
-const fs = require('fs')
+// const cors = require('cors')({ origin: true })
+// const functions = require('firebase-functions')
+// const busboy = require('busboy')
+// const path = require('path')
+// const os = require('os')
+// const fs = require('fs')
 const { find } = require('../models/user-model')
 
-const gcconfig = {
-  propertyId: 'fb-cloud-functions-demo',
-  keyFilename: ''
-}
+// const gcconfig = {
+//   propertyId: 'fb-cloud-functions-demo',
+//   keyFilename: ''
+// }
 
 // const gcs = require('@google-cloud/storage')(gcconfig)
 const db = require('../models/user-model')
