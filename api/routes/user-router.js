@@ -62,15 +62,6 @@ module.uploadFile = functions.https.onRequest(async (req, res) => {
     busboy.end(req.rawBody)
   })
 })
-const data = await db.find('users')
-try {
-  res.status(200).json(data)
-} catch (err) {
-  res.status(500).json({
-    error: err.message
-  })
-}
-
 //--------------------get user by id
 router.get('/:id', (req, res) => {
   const user_id = req.params.id
