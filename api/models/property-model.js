@@ -10,14 +10,6 @@ module.exports = {
   update,
   addTenant
 }
-const db = require('../../data/dbConfig.js')
-
-module.exports = {
-  add,
-  find,
-  findById,
-  getTenantsByPropId
-}
 
 async function add(property) {
   const [id] = await db('property').insert(property)
