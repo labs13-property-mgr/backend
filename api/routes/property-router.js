@@ -78,8 +78,6 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Error deleting property' })
   }
 })
-const router = require('express').Router()
-const db = require('../models/property-model')
 
 //====================================Get Routers
 router.get('/', async (req, res) => {
