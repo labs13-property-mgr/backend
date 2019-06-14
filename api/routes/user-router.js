@@ -13,7 +13,7 @@ const gcconfig = {
   keyFilename: ''
 }
 
-const gcs = require('@google-cloud/storage')(gcconfig)
+// const gcs = require('@google-cloud/storage')(gcconfig)
 const db = require('../models/user-model')
 
 //=====================================Generic Get all users
