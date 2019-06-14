@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-const router = require('express').Router();
-const Db = require('../models/property-model');
-=======
 const router = require('express').Router()
 const Db = require('../models/property-model')
->>>>>>> master
 
 // get list of properties
 router.get('/', async (req, res) => {
@@ -71,20 +66,6 @@ router.put('/:id', async (req, res) => {
 
 // delete a property
 router.delete('/:id', async (req, res) => {
-<<<<<<< HEAD
-	try {
-		const count = await Db.remove(req.params.id);
-		if (count > 0) {
-			res.status(200).json({ message: 'Property deleted' });
-		} else {
-			res.status(404).json({ message: 'Property could not be found' });
-		}
-	} catch (error) {
-		console.log(error);
-		res.status(500).json({ message: 'Error deleting property' });
-	}
-});
-=======
   try {
     const count = await Db.remove(req.params.id)
     if (count > 0) {
@@ -99,68 +80,20 @@ router.delete('/:id', async (req, res) => {
 })
 const router = require('express').Router()
 const db = require('../models/property-model')
->>>>>>> master
 
 //====================================Get Routers
 router.get('/', async (req, res) => {
-	try {
-		const property = await db.find();
-		res.status(200).json(property);
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error.message);
-	}
-});
+  try {
+    const property = await db.find()
+    res.status(200).json(property)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json(error.message)
+  }
+})
 
 //------------------------------Get by ID
 router.get('/:id', (req, res) => {
-<<<<<<< HEAD
-	const property_id = req.params.id;
-	db
-		.findById(property_id)
-		.then((property) => {
-			if (property) {
-				res.status(200).json(property);
-			} else {
-				res.status(404).json({ message: 'property not found' });
-			}
-		})
-		.catch((error) => {
-			if (error) {
-				res.status(500).json({ message: `Error : ${error}` });
-			}
-		});
-});
-//-------------------------------Get Tenants by Property ID
-router.get('/:id/tenants', async (req, res) => {
-	const property_id = req.params.id;
-	db
-		.findTenantByProp(property_id)
-		.then((tenants) => {
-			if (tenants) {
-				res.status(200).json(tenants);
-			} else {
-				res.status(404).json({
-					Message: "tenants don't seem to be home..."
-				});
-			}
-		})
-		.catch((err) => {
-			res.status(500).json({ message: `The tenants seems to be missing try again` });
-		});
-});
-
-//=====================================Post Routers
-router.post('/', async (req, res) => {
-	try {
-		const property = await db.add(req.body);
-		res.status(201).json(property);
-	} catch (error) {
-		console.log(error);
-		res.status(500).json(error.message);
-	}
-});
-=======
   const property_id = req.params.id
   db.findById(property_id)
     .then(property => {
@@ -206,6 +139,5 @@ router.post('/', async (req, res) => {
     res.status(500).json(error.message)
   }
 })
->>>>>>> master
 
 module.exports = router

@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
 module.exports = router
 
-module.uploadFile = functions.https.onRequest((req, res) => {
+module.uploadFile = functions.https.onRequest(async (req, res) => {
   cors((req, res) => {
     const busboy = new busboy({ headers: req.headers })
     let uploadDate = mull
