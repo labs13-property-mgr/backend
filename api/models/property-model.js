@@ -1,3 +1,13 @@
+<<<<<<< HEAD
+const db = require('../../data/dbConfig.js');
+
+module.exports = {
+	add,
+	find,
+	findById,
+	getTenantsByPropId
+};
+=======
 const knex = require('knex')
 const config = require('../../knexfile.js')
 const db = knex(config.development)
@@ -18,6 +28,7 @@ module.exports = {
   findById,
   getTenantsByPropId
 }
+>>>>>>> master
 
 async function add(property) {
   const [id] = await db('property').insert(property)
@@ -51,5 +62,9 @@ async function addTenant(tenant) {
 }
 
 function getTenantsByPropId(PropId) {
+<<<<<<< HEAD
+	return db('tenants').where({ PropId });
+=======
   return db('tenants').where({ PropId })
+>>>>>>> master
 }

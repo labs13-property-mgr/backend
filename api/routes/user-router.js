@@ -1,5 +1,12 @@
 const express = require('express');
 const router = express.Router();
+<<<<<<< HEAD
+const db = require('../models/user-model');
+
+//=====================================Generic Get all users
+router.get('/', async (req, res) => {
+	const data = await db.find('users');
+=======
 const cors = require('cors')({ origin: true });
 const functions = require('firebase-functions');
 const busboy = require('busboy');
@@ -19,6 +26,7 @@ const db = require('../models/user-model')
 //=====================================Generic Get all users
 router.get('/', async (req, res) => {
 	const data = await find('users');
+>>>>>>> master
 	try {
 		res.status(200).json(data);
 	} catch (err) {
@@ -28,6 +36,8 @@ router.get('/', async (req, res) => {
 	}
 });
 
+<<<<<<< HEAD
+=======
 module.exports = router;
 
 module.uploadFile = functions.https.onRequest((req, res) => {
@@ -72,48 +82,50 @@ module.uploadFile = functions.https.onRequest((req, res) => {
   }
 })
 
+>>>>>>> master
 //--------------------get user by id
-router.get("/:id", (req, res) => {
-  const user_id = req.params.id;
-  db.findById(user_id)
-  .then(user => {
-    if (user) {
-      res.status(200).json(user);
-    } else {
-      res.status(404).json({ message: "user not found" });
-    }
-  })
-  .catch(error => {
-    if (error) {
-      res.status(500).json({ message: `Error : ${error}` })
-    }
-  });
+router.get('/:id', (req, res) => {
+	const user_id = req.params.id;
+	db
+		.findById(user_id)
+		.then((user) => {
+			if (user) {
+				res.status(200).json(user);
+			} else {
+				res.status(404).json({ message: 'user not found' });
+			}
+		})
+		.catch((error) => {
+			if (error) {
+				res.status(500).json({ message: `Error : ${error}` });
+			}
+		});
 });
 
 //=====================================User Property routes
-//--------------------get propertyies by user id
-router.get("/:id/properties", async (req, res) => {
-  const user_id = req.params.id;
-  db
-    .findPropByUser(user_id)
-    .then(properties => {
-      if (properties) {
-        res.status(200).json(properties);
-      } else {
-        res
-          .status(404)
-          .json({
-            Message: "These properties are lost like the Donner party...sad indeed"
-          });
-      }
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ message: `The properties seems to be lost try again` });
-    });
+//--------------------get properties by user id
+router.get('/:id/properties', async (req, res) => {
+	const user_id = req.params.id;
+	db
+		.findPropByUser(user_id)
+		.then((properties) => {
+			if (properties) {
+				res.status(200).json(properties);
+			} else {
+				res.status(404).json({
+					Message: 'These properties are lost like the Donner party...sad indeed'
+				});
+			}
+		})
+		.catch((err) => {
+			res.status(500).json({ message: `The properties seems to be lost try again` });
+		});
 });
 //--------------------get single property by user id
 
+<<<<<<< HEAD
+module.exports = router;
+=======
 
 module.exports = router
+>>>>>>> master
