@@ -1,21 +1,21 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.createTable("tenant", tenant => {
-    tenant.increments();
+	return knex.schema.createTable('tenant', (tenant) => {
+		tenant.increments();
 
-    tenant.string("name", 100).notNullable();
+		tenant.string('name', 100).notNullable();
 
-    tenant.string("Spouse Name", 100).notNullable();
+		tenant.string('Spouse Name', 100).notNullable();
 
-    tenant.string("additional adult name", 100);
+		tenant.string('additional adult name', 100);
 
-    tenant.integer("number in household", 100).notNullable();
+		tenant.integer('number in household', 100).notNullable();
 
-    tenant.string("child name", 100);
+		tenant.string('child name', 100);
 
-    tenant.integer("contact info", 100).notNullable();
+		tenant.integer('contact info', 100).notNullable();
 
-    tenant.integer("emergency contact", 100).notNullable();
-  });
+		tenant.integer('emergency contact', 100).notNullable();
+	});
 };
 
 exports.down = function(knex, Promise) {
