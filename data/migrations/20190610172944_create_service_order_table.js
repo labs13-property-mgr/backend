@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE') //link to property
+      .onUpdate('CASCADE') //link to property *** will be not nullable
     tbl.integer('tenant_id', 10) //link to tenant
     tbl.boolean('received') //flags when owner/manager opens service card
   })
