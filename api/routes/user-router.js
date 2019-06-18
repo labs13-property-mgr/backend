@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
-const { find } = require('../models/user-model')
+const { find, findById, findByEmail } = require('../models/user-model')
+const db = require('../../data/dbConfig')
 
 //=====================================Generic Get all users
 router.get('/', async (req, res) => {
@@ -12,6 +13,18 @@ router.get('/', async (req, res) => {
       error: err.message
     })
   }
+})
+
+router.get('/email', (req, res)=> {
+  const { email } = req.body
+
+  findByEmail(email)
+    .then(user => {
+      res.status(200).json(user)
+    })
+    .catch(err => {
+      console.log(err)
+    })
 })
 
 //--------------------get user by id
