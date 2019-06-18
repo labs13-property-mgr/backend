@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
     tbl.string('notes', 1500)
     tbl.string('request_description', 1500).notNullable()
     tbl.string('contractor', 100) //link to contractor table?
-    tbl.string('apointment', 100)
+    tbl.string('appointment', 100)
     tbl.string('followup', 100)
     tbl.boolean('resolved_tenant')
     tbl.boolean('resolved_owner')
@@ -17,8 +17,8 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE') //link to property
-    tbl.integer('tenant_id', 10).notNullable() //link to tenant
+      .onUpdate('CASCADE') //link to property *** will be not nullable
+    tbl.integer('tenant_id', 10) //link to tenant
     tbl.boolean('received') //flags when owner/manager opens service card
   })
 }
