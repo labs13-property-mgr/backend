@@ -22,6 +22,6 @@ function findById(id) {
     .first()
 }
 
-async function findPropByUser(user_id) {
-  return await db('property').where({user_id})
+async function findPropByUser(owner_id) {
+  return await db('property').where({owner_id})
 }

@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const { find } = require('../models/user-model')
+const db = require('../models/user-model')
 
 //=====================================Generic Get all users
 router.get('/', async (req, res) => {
-  const data = await find('users')
+  const data = await db.find('users')
   try {
     res.status(200).json(data)
   } catch (err) {
