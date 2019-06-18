@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
     tbl.string('notes', 1500)
     tbl.string('request_description', 1500).notNullable()
     tbl.string('contractor', 100) //link to contractor table?
-    tbl.string('apointment', 100)
+    tbl.string('appointment', 100)
     tbl.string('followup', 100)
     tbl.boolean('resolved_tenant')
     tbl.boolean('resolved_owner')
