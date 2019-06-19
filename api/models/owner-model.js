@@ -6,7 +6,8 @@ module.exports = {
 	find,
 	findById,
 	findById,
-	update
+	update,
+	getPropertiesByOwner
 };
 
 function find() {
