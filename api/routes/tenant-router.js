@@ -34,18 +34,6 @@ router.put('/:id', async (req, res) => {
 		res.status(500).json({ message: 'Error updating' });
 	}
 });
-// router.put('/:id', (req, res) => {
-// 	Db('tenant')
-//   .where({ id: req.params.id })
-//   .update(req.body)
-//   .then((count) => {
-// 		if (count > 0) {
-// 			res.status(200).json(count);
-// 		} else {
-// 			res.status(404).json({ message: 'tenant not found' });
-// 		}
-// 	});
-// });
 
 router.delete('/:id', async (req, res) => {
 	try {
@@ -60,20 +48,5 @@ router.delete('/:id', async (req, res) => {
 		res.status(500).json({ message: 'Error deleting tenant' });
 	}
 });
-// router.delete('/:id', (req, res) => {
-// 	Db('tenant')
-// 		.where({ id: req.params.id })
-// 		.del()
-// 		.then((count) => {
-// 			if (count > 0) {
-// 				res.status(200).json(count);
-// 			} else {
-// 				res.status(404).json({ message: 'action not found' });
-// 			}
-// 		})
-// 		.catch((error) => {
-// 			res.status(500).json(error);
-// 		});
-// });
 
 module.exports = router;
