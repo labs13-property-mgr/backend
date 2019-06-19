@@ -12,6 +12,7 @@ router.get("/", async (req, res) => {
   }
 });
 
+// adds a tenant to a property ---
 router.post("/", async (req, res) => {
   const { property_id, user_id } = req.body; // have these in the body
 
