@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Db = require('../models/property-model');
+const Db = require('../models/vendor-model');
 
 // get list of vendors
 router.get('/', async (req, res) => {
