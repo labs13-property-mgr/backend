@@ -46,7 +46,7 @@ router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
     const deleted = await deleteService(id);
-    return res.status(200).json(deleted, { message: 'Service was deleted.' });
+    return res.status(200).json(deleted);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
   }
@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
   const updatedBody = req.body;
   const { id } = req.params;
   try {
-    const updated = await updated(id, updatedBody);
+    const updated = await update(id, updatedBody);
     return res.status(200).json(updated);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
