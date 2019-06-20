@@ -13,6 +13,13 @@ exports.up = function(knex, Promise) {
 		tenant.string('child name', 100);
 		tenant.integer('emergency contact', 100);
 		tenant.boolean('active_tenant');
+		tenant
+			.string('property_id')
+			.notNullable()
+			.references('id')
+			.inTable('property')
+			.onDelete('CASCADE')
+			.onUpdate('CASCADE');
 	});
 };
 

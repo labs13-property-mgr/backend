@@ -40,8 +40,8 @@ router.post('/', async (req, res) => {
 });
 
 // add a tenant to a property
-router.post('/:id/tenants', async (req, res) => {
-	const tenantInfo = { ...req.body, property_id: req.params.id };
+router.post('/:id/tenant', async (req, res) => {
+	const tenantInfo = { property_id: req.params.id };
 	try {
 		const tenant = await Db.addTenant(tenantInfo);
 		res.status(200).json(tenant);

@@ -6,16 +6,9 @@ exports.up = function(knex, Promise) {
 		tbl.string('address', 100);
 		tbl // Foreign Key that links to user table Owner of property
 			.integer('owner_id')
-			.unsigned()
+			.notNullable()
 			.references('id')
 			.inTable('users')
-			.onDelete('CASCADE')
-			.onUpdate('CASCADE');
-		tbl // Foreign Key that links to tenant table
-			.integer('tenant_id')
-			.unsigned()
-			.references('id')
-			.inTable('tenant')
 			.onDelete('CASCADE')
 			.onUpdate('CASCADE');
 	});
