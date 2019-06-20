@@ -22,3 +22,6 @@ exports.down = function(knex, Promise) {
 
 // Tenant Name, Spouse Name, Additional Adult Name, Number in Household, Child (first name),
 // Pets In Residence, type of pet, name of pet, Contact info for household, Emergency Contact Info
+
+// seperate users - owners and tenants seperate
+//if ethan knows how to do the roles correctly

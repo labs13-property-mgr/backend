@@ -4,7 +4,7 @@ const cors = require('cors');
 const userRouter = require('../routes/user-router');
 const propertyRouter = require('../routes/property-router');
 const tenantRouter = require('../routes/tenant-router');
-const serviceRouter = require('../routes/serviceRequest-router');
+const serviceRouter = require('../routes/service-router');
 const vendorRouter = require('../routes/vendor-router');
 const ownerRouter = require('../routes/owner-router');
 
