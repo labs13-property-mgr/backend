@@ -58,7 +58,7 @@ router.put('/:id', async (req, res) => {
 		if (updated) {
 			res.status(200).json(updated);
 		} else {
-			res.status(404).json({ message: 'Property not ID not found' });
+			res.status(404).json({ message: 'Property ID not found' });
 		}
 	} catch (error) {
 		res.status(500).json({ message: 'Error updating' });
