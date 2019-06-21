@@ -3,6 +3,7 @@ exports.up = function(knex, Promise) {
     propertyTenant.increments(); // unique ID
 
     propertyTenant
+
       .integer('propertyId')
       .unsigned()
       .references('id')
@@ -12,6 +13,7 @@ exports.up = function(knex, Promise) {
       .onUpdate('CASCADE');
 
     propertyTenant
+
       .integer('tenantId')
       .unsigned()
       .references('id')
