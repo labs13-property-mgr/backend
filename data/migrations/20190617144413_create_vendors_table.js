@@ -13,7 +13,7 @@ exports.up = function(knex, Promise) {
       .integer('owner_id')
       .notNullable()
       .references('id')
-      .inTable('user')
+      .inTable('users')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
   });
