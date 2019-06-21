@@ -9,6 +9,7 @@ exports.up = function(knex, Promise) {
     vendor.string('phone', 20);
     vendor.string('email', 50);
     vendor // Foreign Key that links vendor to the owner address book
+
       .integer('owner_id')
       .notNullable()
       .references('id')

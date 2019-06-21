@@ -3,6 +3,7 @@ exports.up = function(knex, Promise) {
     tbl.increments();
     tbl.string('property_image_name', 128);
     tbl
+
       .integer('property_id')
       .unsigned()
       .references('id')
