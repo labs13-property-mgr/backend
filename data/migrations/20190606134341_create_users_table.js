@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
       .string('uid', 500)
       .notNullable()
       .unique();
-      tbl.string("username",50)
+    tbl.string("username",50)
     tbl.string('First_name', 50);
     tbl.string('Last_name', 50);
     tbl.string('phone', 20);

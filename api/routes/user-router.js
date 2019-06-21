@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const {
-  add,
-  find,
-  findByEmail,
-  remove,
-  update,
-  findPropByUser
-} = require('../models/user-model');
+const db = require('../models/user-model');
 
 router.get('/', async (req, res) => {
   try {
-    const data = await find('users');
+    const data = await db.find('users');
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({
@@ -23,7 +16,7 @@ router.get('/', async (req, res) => {
 router.get('/email', (req, res) => {
   const { email } = req.body;
 
-  findByEmail(email)
+  db.findByEmail(email)
     .then(user => {
       res.status(200).json(user);
     })
@@ -34,7 +27,7 @@ router.get('/email', (req, res) => {
 
 router.get('/:id', (req, res) => {
   const user_id = req.params.id;
-  findById(user_id)
+  db.findById(user_id)
     .then(user => {
       if (user) {
         res.status(200).json(user);
@@ -51,7 +44,7 @@ router.get('/:id', (req, res) => {
 
 router.get('/:id/properties', async (req, res) => {
   const user_id = req.params.id;
-  findPropByUser(user_id)
+  db.findPropByUser(user_id)
     .then(properties => {
       if (properties) {
         res.status(200).json(properties);
@@ -68,7 +61,7 @@ router.get('/:id/properties', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   try {
-    const updated = await update(req.params.id, req.body);
+    const updated = await db.update(req.params.id, req.body);
     if (updated) {
       res.status(200).json(updated);
     } else {
@@ -81,7 +74,7 @@ router.put('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   try {
-    const count = await remove(req.params.id);
+    const count = await db.remove(req.params.id);
     if (count > 0) {
       res.status(200).json({ message: 'User Deleted' });
     } else {
@@ -95,10 +88,10 @@ router.delete('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const userData = req.body;
-    const checkEmail = await findByEmail(userData.email);
+    const checkEmail = await db.findByEmail(userData.email);
     if (!checkEmail) {
       try {
-        const userId = await add(userData);
+        const userId = await db.add(userData);
         res.status(201).json(userId);
       } catch (error) {
         res.status(500).json({ error: 'Unable to add user to database' });
