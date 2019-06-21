@@ -6,6 +6,7 @@ exports.up = function(knex, Promise) {
     tbl.string('address', 100);
     tbl // Foreign Key that links to user table Owner of property
       .string('owner_id')
+      .integer('owner_id')
       .notNullable()
       .references('id')
       .inTable('users')

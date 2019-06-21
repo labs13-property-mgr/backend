@@ -9,10 +9,11 @@ exports.up = function(knex, Promise) {
     vendor.string('phone', 20);
     vendor.string('email', 50);
     vendor // Foreign Key that links vendor to the owner address book
-      .string('owner_id')
+
+      .integer('owner_id')
       .notNullable()
-      .references('uid')
-      .inTable('users')
+      .references('id')
+      .inTable('user')
       .onUpdate('CASCADE')
       .onDelete('CASCADE');
   });

@@ -12,21 +12,21 @@ exports.up = function(knex, Promise) {
     tbl.boolean('resolved_tenant');
     tbl.boolean('resolved_owner');
     tbl // Foreign Key linking to property table *** will be not nullable
-      .string('property_id')
+      .integer('property_id')
       .unsigned()
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
     tbl // Foreign Key linking tenant table
-      .string('tenant_id')
+      .integer('tenant_id')
       .unsigned()
       .references('id')
       .inTable('tenant')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
     tbl // Foreign Key linking user table
-      .string('owner_id')
+      .integer('owner_id')
       .unsigned()
       .references('id')
       .inTable('users')
