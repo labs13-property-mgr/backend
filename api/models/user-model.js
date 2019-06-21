@@ -27,8 +27,8 @@ function findByEmail(email) {
 	return db('users').where({ email }).first();
 }
 
-async function findPropByUser(user_id) {
-	return await db('property').where({ user_id });
+async function findPropByUser(owner_id) {
+	return await db('property').where({ owner_id });
 }
 
 function update(id, changes) {
