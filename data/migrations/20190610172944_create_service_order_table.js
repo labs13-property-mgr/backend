@@ -28,7 +28,7 @@ exports.up = function(knex, Promise) {
     tbl // Foreign Key linking user table
       .integer('owner_id')
       .unsigned()
-      .references('id')
+      .references('uid')
       .inTable('users')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');

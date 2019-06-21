@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Db = require('../models/property-model');
+const db = require('../models/property-model');
 
 // get list of properties
 router.get('/', async (req, res) => {
 	try {
-		const property = await Db.find();
+		const property = await db.find();
 		res.status(200).json(property);
 	} catch (error) {
 		console.log(error);
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // get property by ID
 router.get('/:id', async (req, res) => {
 	try {
-		const property = await Db.findById(req.params.id);
+		const property = await db.findById(req.params.id);
 		if (property) {
 			res.status(200).json(property);
 		} else {
@@ -28,10 +28,10 @@ router.get('/:id', async (req, res) => {
 	}
 });
 
-// post a property
+// add a new property
 router.post('/', async (req, res) => {
 	try {
-		const property = await Db.add(req.body);
+		const property = await db.add(req.body);
 		res.status(201).json(property);
 	} catch (error) {
 		console.log(error);
@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
 router.post('/:id/tenant', async (req, res) => {
 	const tenantInfo = { property_id: req.params.id };
 	try {
-		const tenant = await Db.addTenant(tenantInfo);
+		const tenant = await db.addTenant(tenantInfo);
 		res.status(200).json(tenant);
 	} catch (error) {
 		console.log(error);
@@ -54,7 +54,7 @@ router.post('/:id/tenant', async (req, res) => {
 // edit the property
 router.put('/:id', async (req, res) => {
 	try {
-		const updated = await Db.update(req.params.id, req.body);
+		const updated = await db.update(req.params.id, req.body);
 		if (updated) {
 			res.status(200).json(updated);
 		} else {
@@ -68,7 +68,7 @@ router.put('/:id', async (req, res) => {
 // delete a property
 router.delete('/:id', async (req, res) => {
 	try {
-		const count = await Db.remove(req.params.id);
+		const count = await db.remove(req.params.id);
 		if (count > 0) {
 			res.status(200).json({ message: 'Property deleted' });
 		} else {
