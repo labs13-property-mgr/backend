@@ -2,7 +2,6 @@ exports.up = function(knex, Promise) {
 	return knex.schema.createTable('tenant', (tenant) => {
 		tenant.increments(); // Tenant PRimary Key
 
-		tenant.string('property_id');
 		tenant.string('First_name', 50);
 		tenant.string('Last_name', 50);
 		tenant.string('phone', 20).notNullable();
