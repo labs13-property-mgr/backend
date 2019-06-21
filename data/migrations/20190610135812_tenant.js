@@ -16,7 +16,7 @@ exports.up = function(knex, Promise) {
     tenant.integer('emergency contact', 100);
     tenant.boolean('active_tenant');
     tenant
-      .string('property_id')
+      .integer('property_id')
       .notNullable()
       .references('id')
       .inTable('property')
