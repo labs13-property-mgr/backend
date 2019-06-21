@@ -18,7 +18,7 @@ exports.up = function(knex, Promise) {
     tenant
       .string('property_id')
       .notNullable()
-      .references('id')
+      .references('uid')
       .inTable('property')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
