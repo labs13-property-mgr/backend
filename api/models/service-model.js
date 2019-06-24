@@ -29,10 +29,11 @@ function deleteService(id) {
     .del();
 }
 
-function update(id, updatedBody) {
-  return db('service_orders')
-    .where({ id })
-    .update(updatedBody);
-}
+// async function update(id, changes) {
+//   const [] = await db('service_orders').where({ id }).update(changes);
+//   return findById();
+// }
 
-function update() {}
+function update(id, changes) {
+	return db('service_orders').where({ id }).update(changes);
+}

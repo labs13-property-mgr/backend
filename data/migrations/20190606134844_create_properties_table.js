@@ -11,6 +11,7 @@ exports.up = function(knex, Promise) {
       .inTable('users')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');// Foreign Key that links to user table Owner of property
+      // Active tenant needs to link to tenant table as forign key so that the owner can declare who the tenant is.
   });
 };
 

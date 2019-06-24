@@ -1,11 +1,11 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('service_orders', tbl => {
-    tbl.increments(); //Service Orders Primary Key
+    tbl.increments();//Service Orders Primary Key
 
     tbl.string('date_created', 100);
     tbl.string('request_name', 150).notNullable();
     tbl.string('request_description', 1500).notNullable();
-    tbl.string('status', 100); // for status bar
+    tbl.string('status', 100);//for status bar
     tbl.string('notes', 1500);
     tbl.string('appointment', 100);
     tbl.string('followup', 100);
@@ -17,7 +17,7 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');// Foreign Key linking to property table *** will be not nullable
+      .onUpdate('CASCADE');//Foreign Key linking to property table *** will be not nullable
     tbl 
       .integer('tenant_id')
       .unsigned()

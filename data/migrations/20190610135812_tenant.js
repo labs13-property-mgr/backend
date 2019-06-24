@@ -14,7 +14,7 @@ exports.up = function(knex, Promise) {
     tenant.integer('number in household', 100);
     tenant.string('child name', 100);
     tenant.integer('emergency contact', 100);
-    tenant.boolean('active_tenant');//declares the active tenant
+    tenant.boolean('active_tenant');//this is no longer needed
     tenant
       .string('property_id')
       .notNullable()
