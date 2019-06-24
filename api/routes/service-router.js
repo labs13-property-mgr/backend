@@ -45,19 +45,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// router.put('/:id', async (req, res) => {
-//   const updatedBody = req.body;
-//   const { id } = req.params;
-//   try {
-//     const updated = await db.update(id, updatedBody);
-//     return res.status(200).json(updated);
-//   } catch (err) {
-//     console.error({ code: err.code, message: err.message });
-//   }
-// });
 
-
-//=============
+//========================================================now works in postman
 router.put('/:id', async (req, res) => {
   try {
     const updated = await db.update(req.params.id, req.body);

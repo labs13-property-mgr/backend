@@ -29,11 +29,6 @@ function deleteService(id) {
     .del();
 }
 
-// async function update(id, changes) {
-//   const [] = await db('service_orders').where({ id }).update(changes);
-//   return findById();
-// }
-
 function update(id, changes) {
 	return db('service_orders').where({ id }).update(changes);
 }
