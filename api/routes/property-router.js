@@ -5,7 +5,7 @@ const db = require('../models/property-model');
 // get list of properties
 router.get('/', async (req, res) => {
   try {
-    const property = await db.find();
+    const property = await db.get();
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
