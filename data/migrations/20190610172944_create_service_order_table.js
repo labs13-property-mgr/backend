@@ -11,27 +11,27 @@ exports.up = function(knex, Promise) {
     tbl.string('followup', 100);
     tbl.boolean('resolved_tenant');
     tbl.boolean('resolved_owner');
-    tbl // Foreign Key linking to property table *** will be not nullable
+    tbl 
       .integer('property_id')
       .unsigned()
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');
-    tbl // Foreign Key linking tenant table
+      .onUpdate('CASCADE');// Foreign Key linking to property table *** will be not nullable
+    tbl 
       .integer('tenant_id')
       .unsigned()
       .references('id')
       .inTable('tenant')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');
-    tbl // Foreign Key linking user table
+      .onUpdate('CASCADE');// Foreign Key linking tenant table
+    tbl 
       .integer('owner_id')
       .unsigned()
       .references('uid')
       .inTable('users')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .onUpdate('CASCADE');// Foreign Key linking user table
     tbl.boolean('received'); //flags when owner/manager opens service card
   });
 };
