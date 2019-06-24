@@ -6,10 +6,7 @@ exports.up = function(knex, Promise) {
     tbl.string('First_name', 50);
     tbl.string('Last_name', 50);
     tbl.string('phone', 20);
-    tbl
-      .string('email', 50)
-      .notNullable()
-      .unique();
+    tbl.string('email', 50).unique();
     tbl.string('address', 100);
     tbl.string('role', 50);
   });

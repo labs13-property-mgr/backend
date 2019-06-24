@@ -5,18 +5,15 @@ exports.up = function(knex, Promise) {
     tenant.string('First_name', 50);
     tenant.string('Last_name', 50);
     tenant.string('phone', 20).notNullable();
-    tenant
-      .string('email', 50)
-      .notNullable()
-      .unique();
+    tenant.string('email', 50).unique();
     tenant.string('Spouse Name', 100);
     tenant.string('additional adult name', 100);
     tenant.integer('number in household', 100);
     tenant.string('child name', 100);
     tenant.integer('emergency contact', 100);
-    tenant.boolean('active_tenant');//this is no longer needed
+    tenant.boolean('active_tenant'); //this is no longer needed
     tenant
-      .string('property_id')
+      .integer('property_id')
       .notNullable()
       .references('id')
       .inTable('property')

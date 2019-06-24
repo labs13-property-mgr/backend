@@ -8,13 +8,13 @@ exports.up = function(knex, Promise) {
     vendor.string('last_name', 50);
     vendor.string('phone', 20);
     vendor.string('email', 50);
-    vendor 
-      .integer('owner_id')
+    vendor
+      .string('owner_id')
       .notNullable()
       .references('uid')
       .inTable('users')
       .onUpdate('CASCADE')
-      .onDelete('CASCADE');// Foreign Key that links vendor to the owner address book
+      .onDelete('CASCADE'); // Foreign Key that links vendor to the owner address book
   });
 };
 
