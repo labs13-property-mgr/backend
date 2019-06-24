@@ -14,14 +14,21 @@ exports.up = function(knex, Promise) {
     tenant.integer('number in household', 100);
     tenant.string('child name', 100);
     tenant.integer('emergency contact', 100);
-    tenant.boolean('active_tenant');
+    tenant.boolean('active_tenant');//declares the active tenant
     tenant
       .string('property_id')
       .notNullable()
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .onUpdate('CASCADE'); //links to property they are/have rented
+    tenant
+      .string('owner_id')
+      .notNullable()
+      .references('uid')
+      .inTable('users')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE'); //links to landlord
   });
 };
 
