@@ -4,14 +4,13 @@ exports.up = function(knex, Promise) {
 
     tbl.string('property_name', 128);
     tbl.string('address', 100);
-    tbl // Foreign Key that links to user table Owner of property
-
+    tbl 
       .string('owner_id')
       .notNullable()
       .references('uid')
       .inTable('users')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .onUpdate('CASCADE');// Foreign Key that links to user table Owner of property
   });
 };
 
