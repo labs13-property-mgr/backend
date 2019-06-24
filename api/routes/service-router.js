@@ -1,17 +1,10 @@
 const express = require('express');
 const router = express.Router();
-router.use(express.json());
-const {
-  find,
-  findById,
-  add,
-  deleteService,
-  update
-} = require('../models/service-model');
+const db = require('../models/service-model');
 
 //============================Read Router
 router.get('/', async (req, res) => {
-  const data = await find('service');
+  const data = await db.find('service');
   try {
     res.status(200).json(data);
   } catch (err) {
@@ -25,7 +18,7 @@ router.post('/', async (req, res) => {
   const body = req.body;
 
   try {
-    const inserted = await add(body);
+    const inserted = await db.add(body);
     return res.status(201).json(inserted);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
@@ -35,7 +28,7 @@ router.post('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const service = await findById(id);
+    const service = await db.findById(id);
     return res.status(200).json(service);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
@@ -45,7 +38,7 @@ router.get('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    const deleted = await deleteService(id);
+    const deleted = await db.deleteService(id);
     return res.status(200).json(deleted);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
@@ -56,7 +49,7 @@ router.put('/:id', async (req, res) => {
   const updatedBody = req.body;
   const { id } = req.params;
   try {
-    const updated = await update(id, updatedBody);
+    const updated = await db.update(id, updatedBody);
     return res.status(200).json(updated);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
