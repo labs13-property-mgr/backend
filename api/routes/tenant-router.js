@@ -32,17 +32,38 @@ router.get("/:id", (req, res) => {
 });
 
 // adds a tenant to a property ---
-router.post("/", async (req, res) => {
-  const { property_id, user_id } = req.body; // have these in the body
+// router.post("/", async (req, res) => {
+// const { property_id, user_id } = req.body; // have these in the body
 
-  if (!property_id) {
-    res.status(422).json({ message: "I need a property and user id" });
+// if (!property_id) {
+// res.status(422).json({ message: "I need a property and user id" });
+// }
+// try {
+// const tenant = await db.add(req.body);
+// res.status(201).json(tenant);
+// } catch (error) {
+// console.log(error);
+// res.status(500).json(error.message);
+// }
+// });
+
+// tenant to property - larry simiyu test version
+router.post("/", async (req, res) => {
+  if (!req.body.first_name) {
+    return res
+      .status(400)
+      .json({ message: "Please provite a name for the tenant" });
   }
+
   try {
-    const tenant = await db.add(req.body);
-    res.status(201).json(tenant);
+    let newTenant = await db.insert(req.body);
+    let updatedArray = await db.get();
+    return res.status(201).json({
+      id: newTenant.id,
+      name: req.body.first_name,
+      tenants: updatedArray
+    });
   } catch (error) {
-    console.log(error);
     res.status(500).json(error.message);
   }
 });

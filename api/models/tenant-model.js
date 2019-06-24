@@ -2,6 +2,7 @@ const db = require("../../data/dbConfig.js");
 
 module.exports = {
   add,
+  insert,
   find,
   get,
   findById
@@ -14,6 +15,13 @@ async function add(tenant) {
   //.join("users", "tenant.user_id", "users.id")
   //.join("property", "tenant.property_id", "property.id");
   //.select("tenant.*", "users.name as tenant_name", "property.property_name");
+}
+
+//larry simiyu test addition
+function insert(tenant) {
+  return db("tenant")
+    .insert(tenant)
+    .then(ids => ({ id: ids[0] }));
 }
 
 function find() {
