@@ -1,6 +1,4 @@
-const knex = require("knex");
-const config = require("../../knexfile.js");
-const db = knex(config.development);
+const db = require('../../data/dbConfig.js');
 
 module.exports = {
   add,
@@ -13,12 +11,12 @@ module.exports = {
 };
 
 async function add(property) {
-  const [id] = await db("property").insert(property);
+  const [id] = await db('property').insert(property);
   return getById(id);
 }
 
 function insert(property) {
-  return db("property")
+  return db('property')
     .insert(property)
     .then(ids => ({
       id: ids[0]
@@ -26,27 +24,27 @@ function insert(property) {
 }
 
 function get() {
-  return db("property");
+  return db('property');
 }
 
 function getById(id) {
-  return db("property")
+  return db('property')
     .where({ id })
     .first();
 }
 
 function remove(id) {
-  return db("property")
+  return db('property')
     .where({ id })
     .del();
 }
 
 function update(id, changes) {
-  return db("property")
+  return db('property')
     .where({ id })
     .update(changes);
 }
 
 async function addTenant(tenant) {
-  const [id] = await db("tenant").insert(tenant);
+  const [id] = await db('tenant').insert(tenant);
 }

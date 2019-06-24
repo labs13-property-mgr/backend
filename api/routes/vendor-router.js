@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const Db = require('../models/vendor-model');
+const db = require('../models/vendor-model');
 
 // get list of vendors
 router.get('/', async (req, res) => {
   try {
-    const vendor = await Db.find();
+    const vendor = await db.find();
     res.status(200).json(vendor);
   } catch (error) {
     console.log(error);
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 // get vendor by ID
 router.get('/:id', async (req, res) => {
   try {
-    const vendor = await Db.findById(req.params.id);
+    const vendor = await db.findById(req.params.id);
     if (vendor) {
       res.status(200).json(vendor);
     } else {
@@ -31,7 +31,7 @@ router.get('/:id', async (req, res) => {
 // post vendor
 router.post('/', async (req, res) => {
   try {
-    const vendor = await Db.add(req.body);
+    const vendor = await db.add(req.body);
     res.status(201).json(vendor);
   } catch (error) {
     console.log(error);
@@ -42,7 +42,7 @@ router.post('/', async (req, res) => {
 // edit vendor
 router.put('/:id', async (req, res) => {
   try {
-    const updated = await Db.update(req.params.id, req.body);
+    const updated = await db.update(req.params.id, req.body);
     if (updated) {
       res.status(200).json(updated);
     } else {
@@ -56,7 +56,7 @@ router.put('/:id', async (req, res) => {
 // delete vendor
 router.delete('/:id', async (req, res) => {
   try {
-    const count = await Db.remove(req.params.id);
+    const count = await db.remove(req.params.id);
     if (count > 0) {
       res.status(200).json({ message: 'Vendor deleted' });
     } else {
