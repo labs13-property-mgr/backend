@@ -93,9 +93,8 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-  const userData = req.body;
   try {
-    const userId = await add(userData);
+    const userId = await add(req.body);
     res.status(201).json(userId);
   } catch (err) {
     res.status(500).json({ code: err.code, message: err.message });
