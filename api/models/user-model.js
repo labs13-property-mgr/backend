@@ -6,7 +6,7 @@ module.exports = {
   add,
   find,
   findById,
-  //findPropByUser,
+  findPropByUser,
   findByEmail,
   update,
   remove,
@@ -34,9 +34,9 @@ function findByEmail(email) {
     .first();
 }
 
-// async function findPropByUser(user_id) {
-//   return await db("property").where({ user_id });
-// }
+async function findPropByUser(user_id) {
+  return await db("property").where({ user_id });
+}
 
 function update(id, changes) {
   return db("users")

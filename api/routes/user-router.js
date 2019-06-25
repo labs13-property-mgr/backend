@@ -6,7 +6,7 @@ const {
   findByEmail,
   remove,
   update,
-  //findPropByUser,
+  findPropByUser,
   insert
 } = require("../models/user-model");
 
