@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const db = require('../models/property-model');
 const tenantModel = require('../models/tenant-model');
-const dbKnex = require('../../data/dbConfig');
-router.use(express.json());
 
 router.get('/', async (req, res) => {
   try {
@@ -21,7 +19,7 @@ router.get('/:id', async (req, res) => {
     if (property) {
       res.status(200).json(property);
     } else {
-      res.status(404).json({ message: 'Property not found' });
+      res.status(404).json({ message: 'property not found' });
     }
   } catch (error) {
     console.log(error);
@@ -31,11 +29,38 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const property = await db.insert(req.body);
+    const property = await db.add(req.body);
     res.status(201).json(property);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
+  }
+});
+
+router.put('/:id', async (req, res) => {
+  try {
+    const updated = await db.update(req.params.id, req.body);
+    if (updated) {
+      res.status(200).json(updated);
+    } else {
+      res.status(404).json({ message: 'property ID not found' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating' });
+  }
+});
+
+router.delete('/:id', async (req, res) => {
+  try {
+    const count = await db.remove(req.params.id);
+    if (count > 0) {
+      res.status(200).json({ message: 'property deleted' });
+    } else {
+      res.status(404).json({ message: 'property could not be found' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Error deleting property' });
   }
 });
 
@@ -47,29 +72,6 @@ router.post('/:id/tenant', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
-  }
-});
-
-router.put('/:id', async (req, res) => {
-  try {
-    const updated = await dbKnex('property').update(req.body);
-    res.status(201).json(updated);
-  } catch (err) {
-    res.status(500).json({ code: err.code, message: err.message });
-  }
-});
-
-router.delete('/:id', async (req, res) => {
-  try {
-    const count = await db.remove(req.params.id);
-    if (count > 0) {
-      res.status(200).json({ message: 'Property deleted' });
-    } else {
-      res.status(404).json({ message: 'Property could not be found' });
-    }
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: 'Error deleting property' });
   }
 });
 

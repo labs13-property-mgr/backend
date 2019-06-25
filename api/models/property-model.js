@@ -1,18 +1,16 @@
 const db = require('../../data/dbConfig.js');
 
 module.exports = {
-  insert,
+  add,
   find,
   findById,
-  remove
+  remove,
+  update
 };
 
-function insert(property) {
-  return db('property')
-    .insert(property)
-    .then(ids => ({
-      id: ids[0]
-    }));
+async function add(property) {
+  const [id] = await db('property').insert(property);
+  return findById(id);
 }
 
 function find() {
@@ -29,4 +27,10 @@ function remove(id) {
   return db('property')
     .where({ id })
     .del();
+}
+
+function update(id, changes) {
+  return db('property')
+    .where({ id })
+    .update(changes);
 }
