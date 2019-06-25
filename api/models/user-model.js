@@ -4,7 +4,7 @@ module.exports = {
   add,
   find,
   findById,
-  //findPropByUser,
+  findPropByUser,
   findByEmail,
   update,
   remove,
