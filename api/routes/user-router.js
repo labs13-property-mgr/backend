@@ -95,43 +95,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-// uncomment when not using Larry Simiyu code
-// router.post('/', async (req, res) => {
-//   try {
-//     const userData = req.body;
-//     const checkEmail = await findByEmail(userData.email);
-//     if (!checkEmail) {
-//       try {
-//         const userId = await add(userData);
-//         res.status(201).json(userId);
-//       } catch (error) {
-//         res.status(500).json({ error: 'Unable to add user to database' });
-//       }
-//     } else {
-//       res.status(200).json(checkEmail);
-//     }
-//   } catch (error) {
-//     let message = 'error creating the user';
-//     res.status(500).json({ message, error });
-//   }
-// });
-
-//test post -------Larry Simiyu
 router.post('/', async (req, res) => {
-  if (!req.body.First_name) {
-    return res.status(400).json({
-      message: 'Please provide a name for the user'
-    });
-  }
-
   try {
-    let newUser = await db.insert(req.body);
-    let updatedArray = await db.find();
-    return res.status(201).json({
-      id: newUser.id,
-      name: req.body.First_name,
-      users: updatedArray //lazy loading, return an updated array of users
-    });
     const userData = req.body;
     const checkEmail = await db.findByEmail(userData.email);
     if (!checkEmail) {
@@ -145,8 +110,8 @@ router.post('/', async (req, res) => {
       res.status(200).json(checkEmail);
     }
   } catch (error) {
-    res.status(500).json(error.message);
+    let message = 'error creating the user';
+    res.status(500).json({ message, error });
   }
 });
-
 module.exports = router;
