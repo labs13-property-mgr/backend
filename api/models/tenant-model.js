@@ -1,4 +1,4 @@
-const db = require('../../data/dbConfig.js');
+const db = require("../../data/dbConfig.js");
 
 module.exports = {
   add,
@@ -9,37 +9,35 @@ module.exports = {
 };
 
 async function add(tenant) {
-  const [id] = await db('tenant').insert(tenant);
+  const [id] = await db("tenant").insert(tenant);
   //return findById(id)
   return id;
-  //.join("users", "tenant.user_id", "users.id")
-  //.join("property", "tenant.property_id", "property.id");
-  //.select("tenant.*", "users.name as tenant_name", "property.property_name");
 }
 
 //larry simiyu test addition
 function insert(tenant) {
-  return db('tenant')
+  return db("tenant")
     .insert(tenant)
     .then(ids => ({ id: ids[0] }));
 }
 
 function find() {
-  return db('tenant as t').join('users as s', 't.id', 's.id'); // this is how you join a table
+  // return db("tenant as t").join("users as s", "t.owner_id", "s.uid"); // this is how you join a table
+  return db("tenant");
 }
 
 function get(id) {
   if (id) {
-    return db('tenant')
+    return db("tenant")
       .where({ id: Number(id) })
       .first();
   } else {
-    return db('tenant');
+    return db("tenant");
   }
 }
 
 function findById(id) {
-  return db('tenant')
+  return db("tenant")
     .where({ id })
     .first();
 }

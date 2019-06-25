@@ -2,32 +2,21 @@ const db = require('../../data/dbConfig.js');
 
 module.exports = {
   add,
-  insert, // larry function
-  get,
-  getById,
+  find,
+  findById,
   remove,
-  update,
-  addTenant
+  update
 };
 
-async function add(property) {
-  const [id] = await db('property').insert(property);
-  return getById(id);
+function add(property) {
+  return db('property').insert(property);
 }
 
-function insert(property) {
-  return db('property')
-    .insert(property)
-    .then(ids => ({
-      id: ids[0]
-    }));
-}
-
-function get() {
+function find() {
   return db('property');
 }
 
-function getById(id) {
+function findById(id) {
   return db('property')
     .where({ id })
     .first();
@@ -43,8 +32,4 @@ function update(id, changes) {
   return db('property')
     .where({ id })
     .update(changes);
-}
-
-async function addTenant(tenant) {
-  const [id] = await db('tenant').insert(tenant);
 }
