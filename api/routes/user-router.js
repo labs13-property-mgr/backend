@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const {
   add,
@@ -6,15 +6,15 @@ const {
   findByEmail,
   remove,
   update,
-  //findPropByUser,
+  findPropByUser,
   insert
-} = require('../models/user-model');
+} = require("../models/user-model");
 
-const db = require('../models/user-model'); // larrysimiyu test
+const db = require("../models/user-model"); // larrysimiyu test
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
-    const data = await find('users');
+    const data = await find("users");
     res.status(200).json(data);
   } catch (err) {
     res.status(500).json({
@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/email', (req, res) => {
+router.get("/email", (req, res) => {
   const { email } = req.body;
 
   db.findByEmail(email)
@@ -35,14 +35,14 @@ router.get('/email', (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   const user_id = req.params.id;
   db.findById(user_id)
     .then(user => {
       if (user) {
         res.status(200).json(user);
       } else {
-        res.status(404).json({ message: 'user not found' });
+        res.status(404).json({ message: "user not found" });
       }
     })
     .catch(error => {
@@ -52,7 +52,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-router.get('/:id/properties', async (req, res) => {
+router.get("/:id/properties", async (req, res) => {
   const user_id = req.params.id;
   db.findPropByUser(user_id)
     .then(properties => {
@@ -60,42 +60,45 @@ router.get('/:id/properties', async (req, res) => {
         res.status(200).json(properties);
       } else {
         res.status(404).json({
-          Message: 'These properties are lost like the Donner party...sad indeed'
+          Message:
+            "These properties are lost like the Donner party...sad indeed"
         });
       }
     })
     .catch(err => {
-      res.status(500).json({ message: `The properties seems to be lost try again` });
+      res
+        .status(500)
+        .json({ message: `The properties seems to be lost try again` });
     });
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updated = await db.update(req.params.id, req.body);
     if (updated) {
       res.status(200).json(updated);
     } else {
-      res.status(404).json({ message: 'User ID not found' });
+      res.status(404).json({ message: "User ID not found" });
     }
   } catch (error) {
     res.status(500).json(error.message);
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const count = await db.remove(req.params.id);
     if (count > 0) {
-      res.status(200).json({ message: 'User Deleted' });
+      res.status(200).json({ message: "User Deleted" });
     } else {
-      res.status(404).json({ message: 'User ID not found' });
+      res.status(404).json({ message: "User ID not found" });
     }
   } catch (error) {
     res.status(500).json(error.message);
   }
 });
 
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const userData = req.body;
     const checkEmail = await db.findByEmail(userData.email);
@@ -104,13 +107,13 @@ router.post('/', async (req, res) => {
         const userId = await db.add(userData);
         res.status(201).json(userId);
       } catch (error) {
-        res.status(500).json({ error: 'Unable to add user to database' });
+        res.status(500).json({ error: "Unable to add user to database" });
       }
     } else {
       res.status(200).json(checkEmail);
     }
   } catch (error) {
-    let message = 'error creating the user';
+    let message = "error creating the user";
     res.status(500).json({ message, error });
   }
 });
