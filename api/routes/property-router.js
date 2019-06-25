@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../models/property-model');
+const tenantModel = require('../models/tenant-model');
+const dbKnex = require('../../data/dbConfig');
+router.use(express.json());
 
-// get list of properties
 router.get('/', async (req, res) => {
   try {
     const property = await db.find();
@@ -13,7 +15,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// get property by ID
 router.get('/:id', async (req, res) => {
   try {
     const property = await db.findById(req.params.id);
@@ -28,10 +29,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// add a new property
 router.post('/', async (req, res) => {
   try {
-    const property = await db.add(req.body);
+    const property = await db.insert(req.body);
     res.status(201).json(property);
   } catch (error) {
     console.log(error);
@@ -39,11 +39,10 @@ router.post('/', async (req, res) => {
   }
 });
 
-// add a tenant to a property
 router.post('/:id/tenant', async (req, res) => {
   const tenantInfo = { property_id: req.params.id };
   try {
-    const tenant = await db.addTenant(tenantInfo);
+    const tenant = await tenantModel.insert(tenantInfo);
     res.status(200).json(tenant);
   } catch (error) {
     console.log(error);
@@ -51,33 +50,15 @@ router.post('/:id/tenant', async (req, res) => {
   }
 });
 
-// add a tenant to a property - uncomment when done testing larry
-// router.post("/:id/tenant", async (req, res) => {
-//   const tenantInfo = { property_id: req.params.id };
-//   try {
-//     const tenant = await Db.addTenant(tenantInfo);
-//     res.status(200).json(tenant);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json(error.message);
-//   }
-// });
-
-// edit the property
 router.put('/:id', async (req, res) => {
   try {
-    const updated = await db.update(req.params.id, req.body);
-    if (updated) {
-      res.status(200).json(updated);
-    } else {
-      res.status(404).json({ message: 'Property ID not found' });
-    }
-  } catch (error) {
-    res.status(500).json({ message: 'Error updating' });
+    const updated = await dbKnex('property').update(req.body);
+    res.status(201).json(updated);
+  } catch (err) {
+    res.status(500).json({ code: err.code, message: err.message });
   }
 });
 
-// delete a property
 router.delete('/:id', async (req, res) => {
   try {
     const count = await db.remove(req.params.id);
