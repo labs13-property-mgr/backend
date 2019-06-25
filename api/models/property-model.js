@@ -8,9 +8,8 @@ module.exports = {
   update
 };
 
-async function add(property) {
-  const [id] = await db('property').insert(property);
-  return findById(id);
+function add(property) {
+  return db('property').insert(property);
 }
 
 function find() {
