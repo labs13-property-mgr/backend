@@ -12,6 +12,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/:id", async (req, res) => {
+  try {
+    const tenant = await db.findById(req.params.id);
+    if (tenant) {
+      res.status(200).json(tenant);
+    } else {
+      res.status(404).json({ message: "tenant not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+});
+
 // adds a tenant to a property ---
 router.post("/", async (req, res) => {
   const { property_id, owner_id } = req.body; // have these in the body
