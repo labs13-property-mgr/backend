@@ -93,22 +93,13 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+  const userData = req.body;
   try {
-    const userData = req.body;
-    const checkEmail = await findByEmail(userData.email);
-    if (!checkEmail) {
-      try {
-        const userId = await add(userData);
-        res.status(201).json(userId);
-      } catch (error) {
-        res.status(500).json({ error: 'Unable to add user to database' });
-      }
-    } else {
-      res.status(200).json(checkEmail);
-    }
-  } catch (error) {
-    let message = 'error creating the user';
-    res.status(500).json({ message, error });
+    const userId = await add(userData);
+    res.status(201).json(userId);
+  } catch (err) {
+    res.status(500).json({ code: err.code, message: err.message });
   }
 });
+
 module.exports = router;
