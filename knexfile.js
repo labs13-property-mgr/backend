@@ -21,7 +21,7 @@ module.exports = {
       db: process.env.DB,
       port: process.env.DBPORT,
       user: process.env.USER,
-      password: process.env.pass,
+      password: process.env.PASS,
       databaseURL: process.env.DATABASE_URL
     },
     pool: {
