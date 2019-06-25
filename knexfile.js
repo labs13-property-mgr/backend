@@ -1,5 +1,4 @@
 require('dotenv').config();
-const dbConnection = process.env.DATABASE_URL;
 
 module.exports = {
   development: {
@@ -17,9 +16,24 @@ module.exports = {
   },
   production: {
     client: 'pg',
-    connection: dbConnection,
-    useNullAsDefault: true,
-    migrations: { directory: __dirname + '/data/migrations' },
-    seeds: { directory: __dirname + '/data/seeds' }
+    connection: {
+      host: process.env.HOST,
+      db: process.env.DB,
+      port: process.env.DBPORT,
+      user: process.env.USER,
+      password: process.env.pass,
+      databaseURL: process.env.DATABASE_URL
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './data/migrations'
+    },
+    seeds: {
+      directory: './data/seeds'
+    }
   }
 };
