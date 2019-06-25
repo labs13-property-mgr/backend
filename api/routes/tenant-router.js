@@ -27,12 +27,22 @@ router.get("/:id", async (req, res) => {
 });
 
 // adds a tenant to a property ---
-router.post("/", async (req, res) => {
-  const { property_id, owner_id } = req.body; // have these in the body
+// router.post("/", async (req, res) => {
+//   const { property_id, owner_id } = req.body; // have these in the body
 
-  if (!property_id || !owner_id) {
-    res.status(422).json({ message: "I need a property and user id" });
-  }
+//   if (!property_id || !owner_id) {
+//     res.status(422).json({ message: "I need a property and user id" });
+//   }
+//   try {
+//     const tenant = await db.add(req.body);
+//     res.status(201).json(tenant);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json(error.message);
+//   }
+// });
+
+router.post("/", async (req, res) => {
   try {
     const tenant = await db.add(req.body);
     res.status(201).json(tenant);
