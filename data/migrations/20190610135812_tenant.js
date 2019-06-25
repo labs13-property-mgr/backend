@@ -7,7 +7,6 @@ exports.up = function(knex, Promise) {
     tenant.string('phone', 20);
     tenant.string('email', 50).unique();
     tenant.string('Spouse Name', 100);
-    tenant.string('additional adult name', 100).defaultTo('');
     tenant.integer('number in household', 100).defaultTo(0);
     tenant.string('child name', 100);
     tenant.string('emergency contact', 100);
