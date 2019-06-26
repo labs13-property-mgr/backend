@@ -29,25 +29,25 @@ router.post("/", async (req, res) => {
 //everytime a service request is made you have to have a tenant id associated with it.
 // can get a list of tenants
 
-router.post("/", async (req, res) => {
-  if (!req.body.request_name) {
-    return res.status(400).json({
-      message: "Please provide a name for the service request"
-    });
-  }
+// router.post("/", async (req, res) => {
+//   if (!req.body.request_name) {
+//     return res.status(400).json({
+//       message: "Please provide a name for the service request"
+//     });
+//   }
 
-  try {
-    let newRequest = await db.insert(req.body);
-    let updatedArray = await db.get();
-    return res.status(201).json({
-      id: newRequest.id,
-      name: req.body.request_name,
-      requests: updatedArray
-    });
-  } catch (error) {
-    res.status(500).json(error.message);
-  }
-});
+//   try {
+//     let newRequest = await db.insert(req.body);
+//     let updatedArray = await db.get();
+//     return res.status(201).json({
+//       id: newRequest.id,
+//       name: req.body.request_name,
+//       requests: updatedArray
+//     });
+//   } catch (error) {
+//     res.status(500).json(error.message);
+//   }
+// });
 
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
