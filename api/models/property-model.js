@@ -2,23 +2,19 @@ const db = require("../../data/dbConfig.js");
 
 module.exports = {
   add,
+  find,
   findTenants,
   findById,
   remove,
-  update,
+  update
   // findTenantsByProperty,
-  getAll
 };
 
 function add(property) {
   return db("property").insert(property);
 }
 
-// function find() {
-//   return db("property");
-// }
-
-function getAll() {
+function find() {
   return db("property");
 }
 

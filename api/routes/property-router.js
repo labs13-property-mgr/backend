@@ -6,7 +6,7 @@ router.use(express.json());
 
 router.get("/", async (req, res) => {
   try {
-    const property = await db.getAll();
+    const property = await db.find();
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 
 router.get("/propertieswithtenants", async (req, res, next) => {
   try {
-    const properties = await db.getAll();
+    const properties = await db.find();
     const propertieswithTenants = await db.findTenants();
     if (properties) {
       // const data = properties.map(property => {
