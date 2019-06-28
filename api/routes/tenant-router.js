@@ -26,6 +26,24 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//==================sercive request by tenant id
+router.get('/:id/services', async (req, res) => {
+  const tenant_id = req.params.id;
+  db.findServByTenant(tenant_id)
+    .then(services => {
+      if (services) {
+        res.status(200).json(services);
+      } else {
+        res.status(404).json({
+          Message: `The services seem to be missing...maybe they're all taken care of?`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: `The services seems to be missing try again` });
+    });
+});
+
 // adds a tenant to a property ---
 // router.post("/", async (req, res) => {
 //   const { property_id, owner_id } = req.body; // have these in the body

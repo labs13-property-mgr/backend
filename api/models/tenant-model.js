@@ -7,7 +7,8 @@ module.exports = {
   get,
   findById,
   remove,
-  update
+  update,
+  findServByTenant
 };
 
 async function add(tenant) {
@@ -52,4 +53,8 @@ function update(id, changes) {
   return db("tenant")
     .where({ id })
     .update(changes);
+}
+
+async function findServByTenant(tenant_id) {
+  return await db('service_orders').where({ tenant_id });
 }
