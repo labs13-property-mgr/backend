@@ -6,7 +6,8 @@ module.exports = {
   findTenants,
   findById,
   remove,
-  update
+  update,
+  findServByProp
   // findTenantsByProperty,
 };
 
@@ -66,4 +67,8 @@ function findTenantsByProperty(filter) {
       "t.owner_id as owner_id"
     ])
     .where({ "p.id": filter });
+}
+
+async function findServByProp(property_id) {
+  return await db('service_orders').where({ property_id });
 }
