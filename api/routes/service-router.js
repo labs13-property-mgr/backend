@@ -45,15 +45,19 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+
+//========================================================now works in postman
 router.put('/:id', async (req, res) => {
-  const updatedBody = req.body;
-  const { id } = req.params;
   try {
-    const updated = await db.update(id, updatedBody);
-    return res.status(200).json(updated);
-  } catch (err) {
-    console.error({ code: err.code, message: err.message });
+    const updated = await db.update(req.params.id, req.body);
+    if (updated) {
+      res.status(200).json(updated);
+    } else {
+      res.status(404).json({ message: 'service request not found' });
+    }
+  } catch (error) {
+    res.status(500).json(error.message);
   }
 });
-
+//=============
 module.exports = router;

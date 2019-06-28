@@ -2,24 +2,54 @@ const db = require("../../data/dbConfig.js");
 
 module.exports = {
   add,
+  insert,
   find,
-  findById
+  get,
+  findById,
+  remove,
+  update
 };
 
 async function add(tenant) {
-  const [id] = await db("tenant as t").insert(tenant);
-  return findById(id)
-    .join("users as u", "t.user_id", "u.id")
-    .join("property as p", "t.property_id", "p.id")
-    .select("t.*", "u.name as tenant_name", "p.property_name");
+  return db("tenant").insert(tenant);
+}
+
+//larry simiyu test addition
+function insert(tenant) {
+  return db("tenant")
+    .insert(tenant)
+    .then(ids => ({ id: ids[0] }));
 }
 
 function find() {
-  return db("tenant as t").join("users as s", "t.user_id", "s.id"); // this is how you join a table
+  // return db("tenant as t").join("users as s", "t.owner_id", "s.uid"); // this is how you join a table
+  return db("tenant");
+}
+
+function get(id) {
+  if (id) {
+    return db("tenant")
+      .where({ id: Number(id) })
+      .first();
+  } else {
+    return db("tenant");
+  }
 }
 
 function findById(id) {
   return db("tenant")
     .where({ id })
     .first();
+}
+
+function remove(id) {
+  return db("tenant")
+    .where({ id })
+    .del();
+}
+
+function update(id, changes) {
+  return db("tenant")
+    .where({ id })
+    .update(changes);
 }

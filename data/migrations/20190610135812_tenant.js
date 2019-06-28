@@ -1,25 +1,27 @@
 exports.up = function(knex, Promise) {
   return knex.schema.createTable('tenant', tenant => {
-    tenant.increments(); // Tenant PRimary Key
+    tenant.increments();
 
     tenant.string('First_name', 50);
     tenant.string('Last_name', 50);
-    tenant.string('phone', 20).notNullable();
-    tenant
-      .string('email', 50)
-      .notNullable()
-      .unique();
+    tenant.string('phone', 20);
+    tenant.string('email', 50).unique();
     tenant.string('Spouse Name', 100);
-    tenant.string('additional adult name', 100);
-    tenant.integer('number in household', 100);
+    tenant.string('additional adult name');
+    tenant.integer('number in household', 100).defaultTo(0);
     tenant.string('child name', 100);
-    tenant.integer('emergency contact', 100);
+    tenant.string('emergency contact', 100);
     tenant.boolean('active_tenant');
     tenant
-      .string('property_id')
-      .notNullable()
+      .integer('property_id')
       .references('id')
       .inTable('property')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
+    tenant
+      .string('owner_id')
+      .references('uid')
+      .inTable('users')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
   });
@@ -28,9 +30,3 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
   return knex.schema.dropTableIfExists('tenant');
 };
-
-// Tenant Name, Spouse Name, Additional Adult Name, Number in Household, Child (first name),
-// Pets In Residence, type of pet, name of pet, Contact info for household, Emergency Contact Info
-
-// seperate users - owners and tenants seperate
-//if ethan knows how to do the roles correctly
