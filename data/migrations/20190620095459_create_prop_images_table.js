@@ -9,7 +9,7 @@ exports.up = function(knex, Promise) {
       .references('id')
       .inTable('property')
       .onDelete('CASCADE')
-      .onUpdate('CASCADE'); // links to user table Owner of property_image
+      .onUpdate('CASCADE'); // links to property table of property_image
   });
 };
 
