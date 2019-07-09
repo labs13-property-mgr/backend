@@ -10,6 +10,7 @@ exports.up = function(knex, Promise) {
     tenant.string('additional adult name');
     tenant.integer('number in household', 100).defaultTo(0);
     tenant.string('child name', 100);
+    tenant.string("notes", 500);
     tenant.string('emergency contact', 100);
     tenant.boolean('active_tenant');
     tenant
