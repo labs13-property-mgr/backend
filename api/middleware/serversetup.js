@@ -6,7 +6,7 @@ const propertyRouter = require('../routes/property-router');
 const tenantRouter = require('../routes/tenant-router');
 const serviceRouter = require('../routes/service-router');
 const vendorRouter = require('../routes/vendor-router');
-const receiptRouter = require('./../routes/receipts-router';)
+const receiptRouter = require('./../routes/receipts-router');
 
 module.exports = server => {
   server.use(helmet());
