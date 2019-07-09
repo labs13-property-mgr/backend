@@ -6,7 +6,8 @@ module.exports = {
   findById,
   deleteService,
   update,
-  insert
+  insert,
+  get
 };
 
 async function add(service) {
