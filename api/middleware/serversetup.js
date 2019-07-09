@@ -7,6 +7,7 @@ const tenantRouter = require('../routes/tenant-router');
 const serviceRouter = require('../routes/service-router');
 const vendorRouter = require('../routes/vendor-router');
 const receiptRouter = require('./../routes/receipts-router');
+const propImgRouter = require('./../routes/propImage-router');
 
 module.exports = server => {
   server.use(helmet());
@@ -18,4 +19,5 @@ module.exports = server => {
   server.use('/api/service', serviceRouter);
   server.use('/api/vendor', vendorRouter);
   server.use('/api/receipt', receiptRouter);
+  server.use('/api/propimg', propImgRouter);
 };
