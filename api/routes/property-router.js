@@ -6,7 +6,7 @@ router.use(express.json());
 
 router.get("/", async (req, res) => {
   try {
-    const property = await db.get();
+    const property = await db.find();
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
@@ -55,7 +55,6 @@ router.get("/:id", async (req, res) => {
     res.status(500).json(error.message);
   }
 });
-
 
 router.post("/", async (req, res) => {
   try {
@@ -122,7 +121,7 @@ router.get("/:id/tenant", async (req, res, next) => {
   }
 });
 //==================sercive request by property id
-router.get('/:id/services', async (req, res) => {
+router.get("/:id/services", async (req, res) => {
   const property_id = req.params.id;
   db.findServByProp(property_id)
     .then(services => {
@@ -135,7 +134,9 @@ router.get('/:id/services', async (req, res) => {
       }
     })
     .catch(err => {
-      res.status(500).json({ message: `The services seems to be missing try again` });
+      res
+        .status(500)
+        .json({ message: `The services seems to be missing try again` });
     });
 });
 
