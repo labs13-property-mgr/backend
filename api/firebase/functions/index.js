@@ -70,8 +70,13 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
                     }).then(signedUrl => {
 
                         console.log(signedUrl);
-                        // axios.put(`https://rent-me-app.herokuapp.com/api/property/${property_id}`, {image_url : signedUrl});
                         
+                        // axios.put(
+                        //     'https://rent-me-app.herokuapp.com/api/property/' + property_id,
+                        //     {
+                        //         'image_url' : signedUrl
+                        //     }
+                        // )
                         return;
                     })
                 }
