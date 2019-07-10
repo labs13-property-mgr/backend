@@ -5,13 +5,11 @@ exports.up = function(knex, Promise) {
     tbl.string("address").notNullable();
     tbl
 
-
       .string("owner_id")
       .references("uid")
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-
   });
 };
 
