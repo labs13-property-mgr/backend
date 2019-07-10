@@ -3,6 +3,11 @@ exports.up = function(knex, Promise) {
     tbl.increments();
     tbl.string("property_name").notNullable();
     tbl.string("address").notNullable();
+    tbl.string("unit");
+    tbl.string("city").notNullable();
+    tbl.string("state").notNullable();
+    tbl.string("zip").notNullable();
+    tbl.string("rent");
     tbl
 
       .string("owner_id")
