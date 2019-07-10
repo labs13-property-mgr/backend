@@ -19,6 +19,7 @@ function add(property) {
 async function find() {
   const prop = await db("property")
   return prop;
+
 }
 
 function findImages() {
@@ -31,6 +32,7 @@ function findImages() {
       "i.id as property_image_id",
       "i.property_image_name as property_image_name"
     ]);
+
 }
 
 function findTenants() {
@@ -84,5 +86,5 @@ function findTenantsByProperty(filter) {
 }
 
 async function findServByProp(property_id) {
-  return await db('service_orders').where({ property_id });
+  return await db("service_orders").where({ property_id });
 }
