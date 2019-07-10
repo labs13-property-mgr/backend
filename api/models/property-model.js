@@ -16,12 +16,7 @@ function add(property) {
 }
 
 async function find() {
-  const prop = await db("property as p").join("property_image as i","p.id","=","i.property_id")
-  .select(["p.id as property_id",
-  "p.property_name as property_name",
-      "p.address as property_address",
-      "i.property_image_name as property_image_name"
-]);
+  const prop = await db("property")
   return prop;
 }
 
@@ -76,5 +71,5 @@ function findTenantsByProperty(filter) {
 }
 
 async function findServByProp(property_id) {
-  return await db('service_orders').where({ property_id });
+  return await db("service_orders").where({ property_id });
 }
