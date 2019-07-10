@@ -4,10 +4,38 @@ const db = require("../models/property-model");
 const tenantModel = require("../models/tenant-model");
 router.use(express.json());
 
+// router.get("/", async (req, res) => {
+//   try {
+//     const property = await db.find();
+//     res.status(200).json(property);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json(error.message);
+//   }
+// });
+
 router.get("/", async (req, res) => {
   try {
-    const property = await db.find();
-    res.status(200).json(property);
+    const properties = await db.find();
+    const propertieswithTenants = await db.findImages();
+    if (properties) {
+      // const data = properties.map(property => {
+      //   return property;
+
+      //   // return property;
+      // });
+      const datawithTenants = propertieswithTenants.map(p => {
+        return {
+          ...p,
+          tenants: properties.find(pt => {
+            p.property_id === pt.id;
+          })
+        };
+      });
+      res.status(200).json(datawithTenants);
+    } else {
+      next({ code: 400 });
+    }
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
