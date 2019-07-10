@@ -16,7 +16,12 @@ function add(property) {
 }
 
 function find() {
-  return db("property");
+  return db("property as p").join("property_image as i","p.id","=","i.property_id")
+  .select("p.id as property_id",
+  "p.property_name as property_name",
+      "p.address as property_address",
+      "i.property_image_name as property_image_name"
+  );
 }
 
 function findTenants() {
