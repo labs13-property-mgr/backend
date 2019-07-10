@@ -18,7 +18,7 @@ function add(property) {
 }
 
 async function find() {
-  const prop = await db("property")
+  const prop = await db("property");
   return prop;
 
 }
@@ -55,6 +55,11 @@ function findTenants() {
       "p.id as property_id",
       "p.property_name as property_name",
       "p.address as property_address",
+      "p.unit as property_unit",
+      "p.city as property_city",
+      "p.state as property_state",
+      "p.zip as property_zip",
+      "p.rent as property_rent",
       "t.id as tenant_id",
       "t.First_name as First_name",
       "t.Last_name as Last_name",
