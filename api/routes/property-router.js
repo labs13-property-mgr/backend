@@ -17,22 +17,26 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const properties = await db.find();
-    const propertieswithTenants = await db.findImages();
+
+    const propertyWithImages = await db.findImages();
     if (properties) {
       // const data = properties.map(property => {
       //   return property;
 
       //   // return property;
       // });
-      const datawithTenants = propertieswithTenants.map(p => {
+      const datawithImages = propertyWithImages.map(p => {
         return {
           ...p,
-          tenants: properties.find(pt => {
+          images: properties.find(pt => {
+
             p.property_id === pt.id;
           })
         };
       });
-      res.status(200).json(datawithTenants);
+
+      res.status(200).json(datawithImages);
+
     } else {
       next({ code: 400 });
     }
