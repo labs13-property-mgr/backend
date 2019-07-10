@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../models/property-model');
-const tenantModel = require('../models/tenant-model');
+const db = require("../models/property-model");
+const tenantModel = require("../models/tenant-model");
 router.use(express.json());
 
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     const property = await db.find();
     res.status(200).json(property);
@@ -14,13 +14,27 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/propertieswithtenants", async (req, res, next) => {
   try {
-    const property = await db.findById(req.params.id);
-    if (property) {
-      res.status(200).json(property);
+    const properties = await db.find();
+    const propertieswithTenants = await db.findTenants();
+    if (properties) {
+      // const data = properties.map(property => {
+      //   return property;
+
+      //   // return property;
+      // });
+      const datawithTenants = propertieswithTenants.map(p => {
+        return {
+          ...p,
+          tenants: properties.find(pt => {
+            p.property_id === pt.id;
+          })
+        };
+      });
+      res.status(200).json(datawithTenants);
     } else {
-      res.status(404).json({ message: 'property not found' });
+      next({ code: 400 });
     }
   } catch (error) {
     console.log(error);
@@ -28,7 +42,21 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
+router.get("/:id", async (req, res) => {
+  try {
+    const property = await db.findById(req.params.id);
+    if (property) {
+      res.status(200).json(property);
+    } else {
+      res.status(404).json({ message: "property not found" });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error.message);
+  }
+});
+
+router.post("/", async (req, res) => {
   try {
     const response = await db.add(req.body);
     res.status(201).json(response);
@@ -38,34 +66,34 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updated = await db.update(req.params.id, req.body);
     if (req.params.id && updated) {
       res.status(200).json(updated);
     } else {
-      res.status(404).json({ message: 'property ID not found' });
+      res.status(404).json({ message: "property ID not found" });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Error updating' });
+    res.status(500).json({ message: "Error updating" });
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     const count = await db.remove(req.params.id);
     if (count > 0) {
-      res.status(200).json({ message: 'property deleted' });
+      res.status(200).json({ message: "property deleted" });
     } else {
-      res.status(404).json({ message: 'property could not be found' });
+      res.status(404).json({ message: "property could not be found" });
     }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: 'Error deleting property' });
+    res.status(500).json({ message: "Error deleting property" });
   }
 });
 
-router.post('/:id/tenant', async (req, res) => {
+router.post("/:id/tenant", async (req, res) => {
   const tenantInfo = { property_id: req.params.id };
   try {
     const tenant = await tenantModel.insert(tenantInfo);
@@ -74,6 +102,42 @@ router.post('/:id/tenant', async (req, res) => {
     console.log(error);
     res.status(500).json(error.message);
   }
+});
+
+//==================tenants by property id
+router.get("/:id/tenant", async (req, res, next) => {
+  try {
+    const property_id = req.params.id;
+    const property = await db.findById(property_id);
+    const propertyTenants = await db.findTenantsByProperty(property_id);
+    if (property) {
+      const data = { ...property, tenants: propertyTenants };
+      res.status(200).json(data);
+    } else {
+      next({ code: 400 });
+    }
+  } catch (err) {
+    next(err);
+  }
+});
+//==================sercive request by property id
+router.get("/:id/services", async (req, res) => {
+  const property_id = req.params.id;
+  db.findServByProp(property_id)
+    .then(services => {
+      if (services) {
+        res.status(200).json(services);
+      } else {
+        res.status(404).json({
+          Message: `These services seem to be missing...maybe they're all taken care of?`
+        });
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: `The services seems to be missing try again` });
+    });
 });
 
 module.exports = router;

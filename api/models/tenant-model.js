@@ -5,13 +5,14 @@ module.exports = {
   insert,
   find,
   get,
-  findById
+  findById,
+  remove,
+  update,
+  findServByTenant
 };
 
 async function add(tenant) {
-  const [id] = await db("tenant").insert(tenant);
-  //return findById(id)
-  return id;
+  return db("tenant").insert(tenant);
 }
 
 //larry simiyu test addition
@@ -40,4 +41,20 @@ function findById(id) {
   return db("tenant")
     .where({ id })
     .first();
+}
+
+function remove(id) {
+  return db("tenant")
+    .where({ id })
+    .del();
+}
+
+function update(id, changes) {
+  return db("tenant")
+    .where({ id })
+    .update(changes);
+}
+
+async function findServByTenant(tenant_id) {
+  return await db('service_orders').where({ tenant_id });
 }

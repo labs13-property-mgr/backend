@@ -6,6 +6,7 @@ const {
   findByEmail,
   remove,
   update,
+
   findPropByUser,
   insert
 } = require("../models/user-model");
@@ -13,6 +14,7 @@ const {
 const db = require("../models/user-model"); // larrysimiyu test
 
 router.get("/", async (req, res) => {
+
   try {
     const data = await find("users");
     res.status(200).json(data);
@@ -26,7 +28,7 @@ router.get("/", async (req, res) => {
 router.get("/email", (req, res) => {
   const { email } = req.body;
 
-  db.findByEmail(email)
+  findByEmail(email)
     .then(user => {
       res.status(200).json(user);
     })
@@ -37,7 +39,7 @@ router.get("/email", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const user_id = req.params.id;
-  db.findById(user_id)
+  findById(user_id)
     .then(user => {
       if (user) {
         res.status(200).json(user);
@@ -54,7 +56,7 @@ router.get("/:id", (req, res) => {
 
 router.get("/:id/properties", async (req, res) => {
   const user_id = req.params.id;
-  db.findPropByUser(user_id)
+  findPropByUser(user_id)
     .then(properties => {
       if (properties) {
         res.status(200).json(properties);
@@ -74,7 +76,7 @@ router.get("/:id/properties", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const updated = await db.update(req.params.id, req.body);
+    const updated = await update(req.params.id, req.body);
     if (updated) {
       res.status(200).json(updated);
     } else {
@@ -87,7 +89,7 @@ router.put("/:id", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    const count = await db.remove(req.params.id);
+    const count = await remove(req.params.id);
     if (count > 0) {
       res.status(200).json({ message: "User Deleted" });
     } else {
@@ -100,21 +102,13 @@ router.delete("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const userData = req.body;
-    const checkEmail = await db.findByEmail(userData.email);
-    if (!checkEmail) {
-      try {
-        const userId = await db.add(userData);
-        res.status(201).json(userId);
-      } catch (error) {
-        res.status(500).json({ error: "Unable to add user to database" });
-      }
-    } else {
-      res.status(200).json(checkEmail);
-    }
-  } catch (error) {
-    let message = "error creating the user";
-    res.status(500).json({ message, error });
+
+    const userId = await add(req.body);
+    res.status(201).json(userId);
+  } catch (err) {
+    res.status(500).json({ code: err.code, message: err.message });
+
   }
 });
+
 module.exports = router;
