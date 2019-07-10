@@ -104,6 +104,7 @@ router.post("/:id/tenant", async (req, res) => {
   }
 });
 
+//==================tenants by property id
 router.get("/:id/tenant", async (req, res, next) => {
   try {
     const property_id = req.params.id;
@@ -118,6 +119,25 @@ router.get("/:id/tenant", async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+});
+//==================sercive request by property id
+router.get("/:id/services", async (req, res) => {
+  const property_id = req.params.id;
+  db.findServByProp(property_id)
+    .then(services => {
+      if (services) {
+        res.status(200).json(services);
+      } else {
+        res.status(404).json({
+          Message: `These services seem to be missing...maybe they're all taken care of?`
+        });
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ message: `The services seems to be missing try again` });
+    });
 });
 
 module.exports = router;
