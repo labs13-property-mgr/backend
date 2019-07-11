@@ -17,8 +17,10 @@ function add(property) {
   return db("property").insert(property);
 }
 
-function find() {
-  return db("property");
+async function find() {
+  const prop = await db("property");
+  return prop;
+
 }
 
 function findImages() {
