@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const db = require('../models/service-model');
+const db = require("../models/service-model");
 
 //============================Read Router
-router.get('/', async (req, res) => {
-  const data = await db.find('service');
+router.get("/", async (req, res) => {
+  const data = await db.find("service");
   try {
     res.status(200).json(data);
   } catch (err) {
@@ -14,7 +14,7 @@ router.get('/', async (req, res) => {
   }
 });
 //============================Create Router
-router.post('/', async (req, res) => {
+router.post("/", async (req, res) => {
   const body = req.body;
 
   try {
@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const service = await db.findById(id);
@@ -35,7 +35,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
     const deleted = await db.deleteService(id);
@@ -45,19 +45,24 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-
 //========================================================now works in postman
-router.put('/:id', async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     const updated = await db.update(req.params.id, req.body);
     if (updated) {
       res.status(200).json(updated);
     } else {
-      res.status(404).json({ message: 'service request not found' });
+      res.status(404).json({ message: "service request not found" });
     }
   } catch (error) {
     res.status(500).json(error.message);
   }
 });
+
 //=============
+
+// solution option
+// retrieve service order history by property
+// when service is added add to service_order_history table
+// wh
 module.exports = router;
