@@ -20,6 +20,7 @@ function add(property) {
 async function find() {
   const prop = await db("property");
   return prop;
+
 }
 
 function findImages() {
@@ -32,7 +33,9 @@ function findImages() {
       "i.id as property_image_id",
       "i.property_image_name as property_image_name"
     ]);
+
 }
+
 
 function findTenants() {
   return db("property as p")
