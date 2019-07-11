@@ -64,5 +64,5 @@ router.put("/:id", async (req, res) => {
 // solution option
 // retrieve service order history by property
 // when service is added add to service_order_history table
-// wh
+
 module.exports = router;
