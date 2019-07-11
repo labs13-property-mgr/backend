@@ -8,10 +8,13 @@ module.exports = {
   update
 };
 
-async function add(service) {
-  const [id] = await db('service_orders').insert(service);
-  return findById(id);
+function add(service) {
+  return db('service_orders').insert(service);
 }
+// async function add(service) {
+//   const [id] = await db('service_orders').insert(service);
+//   return findById(id);
+// }
 
 function find() {
   return db('service_orders');
