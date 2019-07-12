@@ -16,10 +16,9 @@ router.get('/', async (req, res) => {
 //============================Create Router
 router.post('/', async (req, res) => {
   const body = req.body;
-
   try {
     const inserted = await db.add(body);
-    return res.status(201).json(inserted);
+    res.status(201).json(inserted);
   } catch (err) {
     console.error({ code: err.code, message: err.message });
   }
