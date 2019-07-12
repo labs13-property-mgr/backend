@@ -5,7 +5,7 @@ const spawn = require('child-process-promise').spawn;
 const cors = require('cors')({ origin: true });
 const Busboy = require('busboy');
 const fs = require('fs');
-// const axios = require('axios')
+const axios = require('axios')
 
 var admin = require("firebase-admin");
 
@@ -70,23 +70,36 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
                     }).then(signedUrl => {
 
                         console.log(signedUrl);
+
+                        let url = signedUrl[0];
+
+                        console.log('url ' + url);
+                        console.log(typeof(url))
                         
-                        // axios.put(
-                        //     'https://rent-me-app.herokuapp.com/api/property/' + property_id,
-                        //     {
-                        //         'image_url' : signedUrl
-                        //     }
-                        // )
-                        return;
+                        // JSON.stringify(url);
+                        console.log("https://rent-me-app.herokuapp.com/api/property/" + property_id);
+                        console.log(typeof("https://rent-me-app.herokuapp.com/api/property/" + property_id))
+
+                        return axios.put(
+                            "https://rent-me-app.herokuapp.com/api/property/" + property_id,
+                            {
+                                "image_url" : url
+                            }
+                        ).then(res => {
+                            return res.status(200).json({
+                                res
+                            })
+                        })
                     })
                 }
-                return;
             });
         }).catch(err => {
-            return res.status(500).json({
+            res.status(500).json({
                 error: err
             })
     });
+
+
 
     if (path.basename(filePath).startsWith('resized-')) {
         console.log('We already resized that file!');
@@ -131,6 +144,7 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
 
     
 });
+
 
 
 
@@ -182,39 +196,3 @@ exports.uploadFile = functions.https.onRequest((req, res) => {
 
 
 
-// exports.getFile = functions.https.onRequest((req, res) => {
-//     cors(req, res, () => {
-//         if (req.method !== 'GET') {
-//             return res.status(500).json({
-//                 message: 'Not Allowed'
-//             })
-//         }
-
-
-//         const bucketName = 'rentme-52af4.appspot.com';
-
-
-//         storage
-//             .bucket(bucketName)
-//             .getFiles()
-//             .then(results => {
-//                 const files = results[0];
-
-//                 console.log('Files:');
-//                 return files.forEach(file => {
-                    
-//                     return file.getSignedUrl({
-//                         action: 'read',
-//                         expires: '03-09-2491'
-//                     }).then(signedUrls => {
-
-//                         console.log(signedUrls)
-//                         return;
-//                     });
-//                 });
-//             })
-//         .catch(err => {
-//             console.error('ERROR:', err);
-//         });
-//     });
-// });
