@@ -1,34 +1,48 @@
-const db = require('../../data/dbConfig.js');
+const db = require("../../data/dbConfig.js");
 
 module.exports = {
   add,
   find,
   findById,
   deleteService,
-  update
+  update,
+  addHistory
 };
 
 async function add(service) {
-  const [id] = await db('service_orders').insert(service);
+  const [id] = await db("service_orders").insert(service);
   return findById(id);
 }
 
+async function addHistory(service) {
+  const [id] = await db("service_history").insert(service);
+  return findHistoryById(id);
+}
+
 function find() {
-  return db('service_orders');
+  return db("service_orders");
 }
 
 function findById(id) {
-  return db('service_orders')
+  return db("service_orders")
+    .where({ id })
+    .first();
+}
+
+function findHistoryById(id) {
+  return db("service_history")
     .where({ id })
     .first();
 }
 
 function deleteService(id) {
-  return db('service_orders')
+  return db("service_orders")
     .where({ id })
     .del();
 }
 
 function update(id, changes) {
-	return db('service_orders').where({ id }).update(changes);
+  return db("service_orders")
+    .where({ id })
+    .update(changes);
 }
