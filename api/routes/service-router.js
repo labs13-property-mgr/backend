@@ -64,7 +64,7 @@ router.put("/:id", async (req, res) => {
 
 //instructions(ideas) for retrieving service order history for specific property
 
-// when posting service request - also add it to your history table
-// get request to retrieve service history of specific property id
+// when posting service request - also add it to your history table [xxx]
+// get request to retrieve service history of specific property id []
 
 module.exports = router;
