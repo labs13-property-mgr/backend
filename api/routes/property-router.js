@@ -173,10 +173,23 @@ router.get("/:id/services", async (req, res) => {
 });
 
 //get service history by property id
-router.get('/:id/history', async (req, res) {
+router.get("/:id/serviceHistory", async (req, res) => {
   const property_id = req.params.id;
-})
-
-
+  db.findServHisByProp(property_id)
+    .then(services => {
+      if (services) {
+        res.status(200).json(services);
+      } else {
+        res.status(404).json({
+          Message: `A history of the properties services are missing`
+        });
+      }
+    })
+    .catch(error => {
+      res
+        .status(500)
+        .json({ message: `The services seem to be missing try again` });
+    });
+});
 
 module.exports = router;
