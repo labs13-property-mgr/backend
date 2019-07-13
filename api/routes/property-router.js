@@ -172,4 +172,11 @@ router.get("/:id/services", async (req, res) => {
     });
 });
 
+//get service history by property id
+router.get('/:id/history', async (req, res) {
+  const property_id = req.params.id;
+})
+
+
+
 module.exports = router;
