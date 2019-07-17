@@ -5,7 +5,9 @@ const spawn = require('child-process-promise').spawn;
 const cors = require('cors')({ origin: true });
 const Busboy = require('busboy');
 const fs = require('fs');
-// const axios = require('axios')
+const express = require('express');
+
+const app = express();
 
 var admin = require("firebase-admin");
 
@@ -40,6 +42,9 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
     let split_property_image_and_id = property_image_url.split(" ")[0];
     let property_id = parseInt(split_property_image_and_id.split("-")[1]);
 
+    let property_table = property_image_url.split(" ")[1];
+    console.log(property_table);
+
         console.log(property_id);
         console.log(typeof(property_id));
 
@@ -48,45 +53,6 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
         return;
     }
 
-
-    storage
-        .bucket('rentme-52af4.appspot.com')
-        .getFiles()
-        .then(results => {
-            const files = results[0];
-            console.log('Files:');
-            return files.forEach(file => {
-
-                console.log(file.name);
-                console.log(filePath);
-
-                if (path.basename(filePath).startsWith('resized-') && filePath === file.name){
-
-                    
-
-                    return file.getSignedUrl({
-                        action: 'read',
-                        expires: '03-09-2491'
-                    }).then(signedUrl => {
-
-                        console.log(signedUrl);
-                        
-                        // axios.put(
-                        //     'https://rent-me-app.herokuapp.com/api/property/' + property_id,
-                        //     {
-                        //         'image_url' : signedUrl
-                        //     }
-                        // )
-                        return;
-                    })
-                }
-                return;
-            });
-        }).catch(err => {
-            return res.status(500).json({
-                error: err
-            })
-    });
 
     if (path.basename(filePath).startsWith('resized-')) {
         console.log('We already resized that file!');
@@ -105,7 +71,7 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
         destination: tmpFilePath
     }).then(() => {
         
-        return spawn('convert', [tmpFilePath, '-resize', '100x100', tmpFilePath]);
+        return spawn('convert', [tmpFilePath, '-resize', '300x180', tmpFilePath]);
 
     }).then(() => {
         destBucket.upload(tmpFilePath, {
@@ -123,14 +89,96 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
                 .delete();
             return;
         }
+        
+        // storage
+        //     .bucket('rentme-52af4.appspot.com')
+        //     .getFiles()
+        //     .then(results => {
 
+        //         const files = results[0];
+                
+        //         let oldFileDeleter = [];
+                
+        //         return files.forEach(file => {
+        //             if (file.name.startsWith("resized-" + property_id)) {
+        //                 oldFileDeleter.push(file);
+        //                 if (oldFileDeleter.length === 2){
+        //                     let file1 = oldFileDeleter[0];
+        //                     let file2 = oldFileDeleter[1];
 
-        return fs.unlinkSync(tempFilePath)
+        //                     console.log('file1' + file1);
+        //                     console.log('file2' + file2);
+        //                 }
+        //             }
+        //         })
+        //     }).catch(err => {
+        //         return err;
+        //     })
+
+        return fs.unlinkSync(tempFilePath);
 
     })
-
     
 });
+
+
+app.get('/file/:name', (req, res) => {
+
+    let fileName = "resized-" + req.params.name;
+    // res.send('yo')
+    cors(req, res, () => {
+        if (req.method !== 'GET') {
+            return res.status(500).json({
+                message: 'Not Allowed'
+            });
+        }
+
+        
+        console.log(fileName)
+
+        storage
+            .bucket('rentme-52af4.appspot.com')
+            .getFiles()
+            .then(results => {
+                const files = results[0];
+                console.log('Files:');
+                return files.forEach(file => {
+                    if (file === fileName)
+                    console.log(file.name)
+
+                    return file.getSignedUrl({
+                        action: 'read',
+                        expires: '03-09-2491'
+                    }).then(signedUrl => {
+
+                        console.log(signedUrl);
+
+                        let url = signedUrl[0];
+
+                        console.log('url ' + url);
+                        console.log(typeof(url))
+                        
+                        
+                        return res.status(200).json(
+                            url
+                        );
+                        
+
+                    })
+                })
+            
+            }).catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            })
+    })
+})
+
+
+
+exports.getfile = functions.https.onRequest(app);
+    
 
 
 
@@ -182,39 +230,3 @@ exports.uploadFile = functions.https.onRequest((req, res) => {
 
 
 
-// exports.getFile = functions.https.onRequest((req, res) => {
-//     cors(req, res, () => {
-//         if (req.method !== 'GET') {
-//             return res.status(500).json({
-//                 message: 'Not Allowed'
-//             })
-//         }
-
-
-//         const bucketName = 'rentme-52af4.appspot.com';
-
-
-//         storage
-//             .bucket(bucketName)
-//             .getFiles()
-//             .then(results => {
-//                 const files = results[0];
-
-//                 console.log('Files:');
-//                 return files.forEach(file => {
-                    
-//                     return file.getSignedUrl({
-//                         action: 'read',
-//                         expires: '03-09-2491'
-//                     }).then(signedUrls => {
-
-//                         console.log(signedUrls)
-//                         return;
-//                     });
-//                 });
-//             })
-//         .catch(err => {
-//             console.error('ERROR:', err);
-//         });
-//     });
-// });
