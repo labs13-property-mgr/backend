@@ -124,7 +124,7 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
 
 app.get('/file/:name', (req, res) => {
 
-    let fileName = req.params.name;
+    let fileName = "resized-" + req.params.name;
     // res.send('yo')
     cors(req, res, () => {
         if (req.method !== 'GET') {
@@ -143,7 +143,7 @@ app.get('/file/:name', (req, res) => {
                 const files = results[0];
                 console.log('Files:');
                 return files.forEach(file => {
-                    if (file === "resized-" + fileName)
+                    if (file === fileName)
                     console.log(file.name)
 
                     return file.getSignedUrl({
