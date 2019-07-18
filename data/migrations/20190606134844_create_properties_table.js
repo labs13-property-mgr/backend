@@ -8,7 +8,7 @@ exports.up = function(knex, Promise) {
     tbl.string("state", 150).notNullable();
     tbl.string("zip", 150).notNullable();
     tbl.string("rent", 150);
-    tbl.string("image_url", 3000);
+    tbl.text("image_url");
     tbl
 
       .string("owner_id", 150)
