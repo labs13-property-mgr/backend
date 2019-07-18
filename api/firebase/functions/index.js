@@ -127,7 +127,7 @@ app.get('/file/:name', (req, res) => {
     let fileName = "resized-" + req.params.name;
     // res.send('yo')
     cors(req, res, () => {
-        if (req.method !== 'GET') {
+        if (req.method === 'POST') {
             return res.status(500).json({
                 message: 'Not Allowed'
             });
