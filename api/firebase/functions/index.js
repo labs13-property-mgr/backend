@@ -32,6 +32,7 @@ const storage = new Storage({
 
 
 exports.onFileChange = functions.storage.object().onFinalize(event => {
+
     const bucket = event.bucket;
     const contentType = event.contentType;
     const filePath = event.name;
@@ -39,102 +40,85 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
 
 
     let property_image_url = event.name;
-    let split_property_image_and_id = property_image_url.split(" ")[0];
-    let property_id = parseInt(split_property_image_and_id.split("-")[1]);
-
-    let property_table = property_image_url.split(" ")[1];
-    console.log(property_table);
-
-        console.log(property_id);
-        console.log(typeof(property_id));
-
-    if (event.id === null) {
-        console.log('We deleted a file, exit...');
-        return;
-    }
-
-
-    if (path.basename(filePath).startsWith('resized-')) {
-        console.log('We already resized that file!');
-        return;
-    }
+    let numeric_property_id = property_image_url.split(" ")[0];
+    let property_id = numeric_property_id + "";
 
     
-    const destBucket = storage.bucket(bucket);
-    const tmpFilePath = path.join(os.tmpdir(), path.basename(filePath));
-    const metadata = { contentType: contentType };
+    
 
+    // console.log('need to delete' + path.basename(filePath));
 
+    
+    
 
+    storage
+        .bucket('rentme-52af4.appspot.com')
+        .getFiles()
+        .then(results => {
 
-    return destBucket.file(filePath).download({
-        destination: tmpFilePath
-    }).then(() => {
-        
-        return spawn('convert', [tmpFilePath, '-resize', '300x180', tmpFilePath]);
+            
 
-    }).then(() => {
-        destBucket.upload(tmpFilePath, {
+            const files = results[0];
+            
+            let oldFileDeleter = [];
+            let newfileDeleter = [];
 
-            destination: 'resized-' + path.basename(filePath),
-            metadata: metadata
-
-        });
-
-        if (path.basename(filePath).startsWith('resized-') === false) {
-        // console.log('need to delete' + path.basename(filePath));
-            storage
-                .bucket('rentme-52af4.appspot.com')
-                .file(path.basename(filePath))
-                .delete();
-            return;
-        }
-        
-        // storage
-        //     .bucket('rentme-52af4.appspot.com')
-        //     .getFiles()
-        //     .then(results => {
-
-        //         const files = results[0];
+            let file1 = null;
+            let file2 = null;
+            
+            return files.forEach(file => {
+                    
+                oldFileDeleter.push(file);
                 
-        //         let oldFileDeleter = [];
+                newfileDeleter = oldFileDeleter.filter(files => path.basename(files).startsWith(property_id));
+
                 
-        //         return files.forEach(file => {
-        //             if (file.name.startsWith("resized-" + property_id)) {
-        //                 oldFileDeleter.push(file);
-        //                 if (oldFileDeleter.length === 2){
-        //                     let file1 = oldFileDeleter[0];
-        //                     let file2 = oldFileDeleter[1];
 
-        //                     console.log('file1' + file1);
-        //                     console.log('file2' + file2);
-        //                 }
-        //             }
-        //         })
-        //     }).catch(err => {
-        //         return err;
-        //     })
+            }).then(() => {
+                if(newfileDeleter.length === 0){
 
-        return fs.unlinkSync(tempFilePath);
+                    newfileDeleter = [];
+                    return;
 
-    })
+                } else if (newfileDeleter.length === 1) {
+
+                    file1 = newfileDeleter[0];
+                    file2 = newfileDeleter[1];
+
+
+                    newfileDeleter = []
+
+                    console.log(file1);
+                    console.log(file2);
+
+                    return;
+                }
+
+                return;
+            })
+            
+        }).catch(err => {
+            return err;
+        })
+
     
 });
 
 
 app.get('/file/:name', (req, res) => {
 
-    let fileName = "resized-" + req.params.name;
-    // res.send('yo')
+    let fileName = req.params.name;
+    console.log(fileName);
+    // res.send('working')
     cors(req, res, () => {
-        if (req.method === 'POST') {
+        if (req.method !== 'GET') {
             return res.status(500).json({
                 message: 'Not Allowed'
             });
         }
 
         
-        console.log(fileName)
+        
 
         storage
             .bucket('rentme-52af4.appspot.com')
@@ -143,28 +127,29 @@ app.get('/file/:name', (req, res) => {
                 const files = results[0];
                 console.log('Files:');
                 return files.forEach(file => {
-                    if (file === fileName)
-                    console.log(file.name)
+                    if (file.name === fileName){
+                        console.log(file.name)
 
-                    return file.getSignedUrl({
-                        action: 'read',
-                        expires: '03-09-2491'
-                    }).then(signedUrl => {
+                        return file.getSignedUrl({
+                            action: 'read',
+                            expires: '03-09-2491'
+                        }).then(signedUrl => {
 
-                        console.log(signedUrl);
+                            console.log(signedUrl);
 
-                        let url = signedUrl[0];
+                            let url = signedUrl[0];
 
-                        console.log('url ' + url);
-                        console.log(typeof(url))
-                        
-                        
-                        return res.status(200).json(
-                            url
-                        );
-                        
-
-                    })
+                            console.log('url ' + url);
+                            console.log(typeof(url))
+                            
+                            
+                            return res.status(200).json(
+                                url
+                            );
+                            
+                        })
+                    }
+        
                 })
             
             }).catch(err => {
@@ -172,6 +157,7 @@ app.get('/file/:name', (req, res) => {
                     error: err
                 })
             })
+
     })
 })
 
