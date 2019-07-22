@@ -33,23 +33,16 @@ const storage = new Storage({
 
 exports.onFileChange = functions.storage.object().onFinalize(event => {
 
-    const bucket = event.bucket;
-    const contentType = event.contentType;
-    const filePath = event.name;
     console.log('File change detected, function execution started');
 
 
     let property_image_url = event.name;
     let numeric_property_id = property_image_url.split(" ")[0];
-    let property_id = numeric_property_id + "";
+    let property_id = String(numeric_property_id);
 
     
     
-
-    // console.log('need to delete' + path.basename(filePath));
-
-    
-    
+    console.log(event.name);
 
     storage
         .bucket('rentme-52af4.appspot.com')
@@ -67,20 +60,22 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
             let file2 = null;
             
             return files.forEach(file => {
+
+                console.log(file.name);
                     
-                oldFileDeleter.push(file);
+                oldFileDeleter.push(file.name);
                 
                 newfileDeleter = oldFileDeleter.filter(files => path.basename(files).startsWith(property_id));
 
-                
+                console.log(newfileDeleter);
 
-            }).then(() => {
-                if(newfileDeleter.length === 0){
+            
+                if(newfileDeleter.length === 1){
 
                     newfileDeleter = [];
                     return;
 
-                } else if (newfileDeleter.length === 1) {
+                } else if (newfileDeleter.length === 2) {
 
                     file1 = newfileDeleter[0];
                     file2 = newfileDeleter[1];
@@ -88,19 +83,44 @@ exports.onFileChange = functions.storage.object().onFinalize(event => {
 
                     newfileDeleter = []
 
-                    console.log(file1);
-                    console.log(file2);
+                    console.log('file 1  ' + file1);
+                    console.log('file 2  ' + file2);
 
-                    return;
+                    let file1Parsing = file1;
+                    let file1DateCreated = file1Parsing.split(" ")[1];
+                    let file1Date = parseInt(file1DateCreated);
+
+                    let file2Parsing = file2;
+                    let file2DateCreated = file2Parsing.split(" ")[1];
+                    let file2Date = parseInt(file2DateCreated);
+
+
+                    if(file1Date < file2Date){
+
+                        console.log('file1 deleted');
+
+                        return storage
+                            .bucket('rentme-52af4.appspot.com')
+                            .file(file1)
+                            .delete();
+
+                    } else {
+
+                        console.log('file2 deleted');
+
+                        return storage
+                            .bucket('rentme-52af4.appspot.com')
+                            .file(file2)
+                            .delete();
+                    }
+                    
                 }
 
-                return;
             })
             
         }).catch(err => {
             return err;
         })
-
     
 });
 
