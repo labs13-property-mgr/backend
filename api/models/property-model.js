@@ -31,7 +31,7 @@ function findImages() {
       "p.property_name as property_name",
       "p.address as property_address",
       "i.id as property_image_id",
-      "i.property_image_name as property_image_name"
+      "i.image_url as image_url"
     ]);
 }
 
@@ -47,6 +47,7 @@ function findTenants() {
       "p.state as property_state",
       "p.zip as property_zip",
       "p.rent as property_rent",
+      "p.image_url as image_url",
       "t.id as tenant_id",
       "t.First_name as First_name",
       "t.Last_name as Last_name",

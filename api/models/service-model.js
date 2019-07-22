@@ -9,10 +9,13 @@ module.exports = {
   addHistory
 };
 
-async function add(service) {
-  const [id] = await db("service_orders").insert(service);
-  return findById(id);
+function add(service) {
+  return db("service_orders").insert(service);
 }
+// async function add(service) {
+//   const [id] = await db('service_orders').insert(service);
+//   return findById(id);
+// }
 
 async function addHistory(service) {
   const [id] = await db("service_history").insert(service);

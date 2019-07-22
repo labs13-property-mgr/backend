@@ -5,7 +5,9 @@ const spawn = require('child-process-promise').spawn;
 const cors = require('cors')({ origin: true });
 const Busboy = require('busboy');
 const fs = require('fs');
-// const axios = require('axios')
+const express = require('express');
+
+const app = express();
 
 var admin = require("firebase-admin");
 
@@ -30,107 +32,159 @@ const storage = new Storage({
 
 
 exports.onFileChange = functions.storage.object().onFinalize(event => {
-    const bucket = event.bucket;
-    const contentType = event.contentType;
-    const filePath = event.name;
+
     console.log('File change detected, function execution started');
 
 
     let property_image_url = event.name;
-    let split_property_image_and_id = property_image_url.split(" ")[0];
-    let property_id = parseInt(split_property_image_and_id.split("-")[1]);
+    let numeric_property_id = property_image_url.split(" ")[0];
+    let property_id = String(numeric_property_id);
 
-        console.log(property_id);
-        console.log(typeof(property_id));
-
-    if (event.id === null) {
-        console.log('We deleted a file, exit...');
-        return;
-    }
-
+    
+    
+    console.log(event.name);
 
     storage
         .bucket('rentme-52af4.appspot.com')
         .getFiles()
         .then(results => {
+
+            
+
             const files = results[0];
-            console.log('Files:');
+            
+            let oldFileDeleter = [];
+            let newfileDeleter = [];
+
+            let file1 = null;
+            let file2 = null;
+            
             return files.forEach(file => {
 
                 console.log(file.name);
-                console.log(filePath);
-
-                if (path.basename(filePath).startsWith('resized-') && filePath === file.name){
-
                     
+                oldFileDeleter.push(file.name);
+                
+                newfileDeleter = oldFileDeleter.filter(files => path.basename(files).startsWith(property_id));
 
-                    return file.getSignedUrl({
-                        action: 'read',
-                        expires: '03-09-2491'
-                    }).then(signedUrl => {
+                console.log(newfileDeleter);
 
-                        console.log(signedUrl);
-                        
-                        // axios.put(
-                        //     'https://rent-me-app.herokuapp.com/api/property/' + property_id,
-                        //     {
-                        //         'image_url' : signedUrl
-                        //     }
-                        // )
-                        return;
-                    })
+            
+                if(newfileDeleter.length === 1){
+
+                    newfileDeleter = [];
+                    return;
+
+                } else if (newfileDeleter.length === 2) {
+
+                    file1 = newfileDeleter[0];
+                    file2 = newfileDeleter[1];
+
+
+                    newfileDeleter = []
+
+                    console.log('file 1  ' + file1);
+                    console.log('file 2  ' + file2);
+
+                    let file1Parsing = file1;
+                    let file1DateCreated = file1Parsing.split(" ")[1];
+                    let file1Date = parseInt(file1DateCreated);
+
+                    let file2Parsing = file2;
+                    let file2DateCreated = file2Parsing.split(" ")[1];
+                    let file2Date = parseInt(file2DateCreated);
+
+
+                    if(file1Date < file2Date){
+
+                        console.log('file1 deleted');
+
+                        return storage
+                            .bucket('rentme-52af4.appspot.com')
+                            .file(file1)
+                            .delete();
+
+                    } else {
+
+                        console.log('file2 deleted');
+
+                        return storage
+                            .bucket('rentme-52af4.appspot.com')
+                            .file(file2)
+                            .delete();
+                    }
+                    
                 }
-                return;
-            });
-        }).catch(err => {
-            return res.status(500).json({
-                error: err
+
             })
-    });
-
-    if (path.basename(filePath).startsWith('resized-')) {
-        console.log('We already resized that file!');
-        return;
-    }
-
-    
-    const destBucket = storage.bucket(bucket);
-    const tmpFilePath = path.join(os.tmpdir(), path.basename(filePath));
-    const metadata = { contentType: contentType };
-
-
-
-
-    return destBucket.file(filePath).download({
-        destination: tmpFilePath
-    }).then(() => {
-        
-        return spawn('convert', [tmpFilePath, '-resize', '100x100', tmpFilePath]);
-
-    }).then(() => {
-        destBucket.upload(tmpFilePath, {
-
-            destination: 'resized-' + path.basename(filePath),
-            metadata: metadata
-
-        });
-
-        if (path.basename(filePath).startsWith('resized-') === false) {
-        // console.log('need to delete' + path.basename(filePath));
-            storage
-                .bucket('rentme-52af4.appspot.com')
-                .file(path.basename(filePath))
-                .delete();
-            return;
-        }
-
-
-        return fs.unlinkSync(tempFilePath)
-
-    })
-
+            
+        }).catch(err => {
+            return err;
+        })
     
 });
+
+
+app.get('/file/:name', (req, res) => {
+
+    let fileName = req.params.name;
+    console.log(fileName);
+    // res.send('working')
+    cors(req, res, () => {
+        if (req.method !== 'GET') {
+            return res.status(500).json({
+                message: 'Not Allowed'
+            });
+        }
+
+        
+        
+
+        storage
+            .bucket('rentme-52af4.appspot.com')
+            .getFiles()
+            .then(results => {
+                const files = results[0];
+                console.log('Files:');
+                return files.forEach(file => {
+                    if (file.name === fileName){
+                        console.log(file.name)
+
+                        return file.getSignedUrl({
+                            action: 'read',
+                            expires: '03-09-2491'
+                        }).then(signedUrl => {
+
+                            console.log(signedUrl);
+
+                            let url = signedUrl[0];
+
+                            console.log('url ' + url);
+                            console.log(typeof(url))
+                            
+                            
+                            return res.status(200).json(
+                                url
+                            );
+                            
+                        })
+                    }
+        
+                })
+            
+            }).catch(err => {
+                res.status(500).json({
+                    error: err
+                })
+            })
+
+    })
+})
+
+
+
+exports.getfile = functions.https.onRequest(app);
+    
 
 
 
@@ -182,39 +236,3 @@ exports.uploadFile = functions.https.onRequest((req, res) => {
 
 
 
-// exports.getFile = functions.https.onRequest((req, res) => {
-//     cors(req, res, () => {
-//         if (req.method !== 'GET') {
-//             return res.status(500).json({
-//                 message: 'Not Allowed'
-//             })
-//         }
-
-
-//         const bucketName = 'rentme-52af4.appspot.com';
-
-
-//         storage
-//             .bucket(bucketName)
-//             .getFiles()
-//             .then(results => {
-//                 const files = results[0];
-
-//                 console.log('Files:');
-//                 return files.forEach(file => {
-                    
-//                     return file.getSignedUrl({
-//                         action: 'read',
-//                         expires: '03-09-2491'
-//                     }).then(signedUrls => {
-
-//                         console.log(signedUrls)
-//                         return;
-//                     });
-//                 });
-//             })
-//         .catch(err => {
-//             console.error('ERROR:', err);
-//         });
-//     });
-// });

@@ -100,14 +100,18 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    console.log(res);
+    console.log(req);
+    // res.status(404).json({ message: `${req.params.id}, ${req.body}` });
     const updated = await db.update(req.params.id, req.body);
+
     if (req.params.id && updated) {
       res.status(200).json(updated);
     } else {
       res.status(404).json({ message: "property ID not found" });
     }
-  } catch (error) {
-    res.status(500).json({ message: "Error updating" });
+  } catch ({message}) {
+    res.status(500).json({ message });
   }
 });
 
