@@ -18,6 +18,7 @@ router.post("/", async (req, res) => {
   const body = req.body;
   try {
     const inserted = await db.add(body);
+    const history = await db.addHistory(body);
     res.status(201).json(inserted);
   } catch (err) {
     console.error({ code: err.code, message: err.message });

@@ -18,8 +18,9 @@ function add(service) {
 // }
 
 async function addHistory(service) {
-  const [id] = await db("service_history").insert(service);
-  return findHistoryById(id);
+  return db("service_history").insert(service);
+  // const [id] = await db("service_history").insert(service);
+  // return findHistoryById(id);
 }
 
 function find() {
