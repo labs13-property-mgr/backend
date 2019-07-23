@@ -1,14 +1,22 @@
 const express = require('express');
-//const router = express.Router();
+const router = express.Router();
 
 
-server.post('/', (req, res) => {
+router.post('/', (req, res) => {
     res.header('Content-Type', 'application/json');
     client.message
         .create({
             from: process.env.TWILIO_PHONE_NUMBER,
-            to: '+15129664123',
-            body: 'This is a test message from RentMe App'
+            to: req.body.to,
+            body: req.body.body
         })
-        .then(message => console.log(message.sid))
+        .then(() => {
+            res.send(JSON.stringify({ success: true }));
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(JSON.stringify({ success: false }));
+        });
 })
+
+module.exports = router;

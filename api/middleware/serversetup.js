@@ -9,7 +9,7 @@ const serviceRouter = require('../routes/service-router');
 const vendorRouter = require('../routes/vendor-router');
 const receiptRouter = require('./../routes/receipts-router');
 const propImgRouter = require('./../routes/propImage-router');
-//const messageRouter = require('../routes/message-router');
+const messageRouter = require('../routes/message-router');
 
 module.exports = server => {
   server.use(helmet());
@@ -24,5 +24,5 @@ module.exports = server => {
   server.use('/api/vendor', vendorRouter);
   server.use('/api/receipt', receiptRouter);
   server.use('/api/propimg', propImgRouter);
-  //server.use('/api/message', messageRouter)
+  server.use('/api/message', messageRouter);
 };
