@@ -110,7 +110,7 @@ router.put("/:id", async (req, res) => {
     } else {
       res.status(404).json({ message: "property ID not found" });
     }
-  } catch ({message}) {
+  } catch ({ message }) {
     res.status(500).json({ message });
   }
 });
@@ -177,7 +177,7 @@ router.get("/:id/services", async (req, res) => {
 });
 
 //get service history by property id
-router.get("/:id/serviceHistory", async (req, res) => {
+router.get("/:id/serviceHistory", (req, res) => {
   const property_id = req.params.id;
   db.findServHisByProp(property_id)
     .then(services => {
