@@ -14,6 +14,8 @@ router.get("/", async (req, res) => {
   }
 });
 
+// change get router to return list of properties alphabetically
+
 // router.get("/", async (req, res) => {
 //   try {
 //     const properties = await db.find();
