@@ -8,22 +8,34 @@ router.get("/", async (req, res) => {
   try {
     const property = await db.find();
 
-    const dynamicSort = property => {
-      var sortOrder = 1;
-      if (property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
-      }
-      return function(a, b) {
-        if (sortOrder == -1) {
-          return b[property].localCompare(a[property]);
-        } else {
-          return a[property].localCompare(b[property]);
-        }
-      };
-    };
+    // const dynamicSort = property => {
+    //   var sortOrder = 1;
+    //   if (property[0] === "-") {
+    //     sortOrder = -1;
+    //     property = property.substr(1);
+    //   }
+    //   return function(a, b) {
+    //     if (sortOrder == -1) {
+    //       return b[property].localCompare(a[property]);
+    //     } else {
+    //       return a[property].localCompare(b[property]);
+    //     }
+    //   };
+    // };
 
-    property.sort(dynamicSort("-property_name"));
+    // property.sort(dynamicSort("-property_name"));
+
+    // secondary sorty option
+    property.sort(function(a, b) {
+      if (a.property_name < b.property_name) {
+        return -1;
+      }
+      if (a.property_name > b.property_name) {
+        return 1;
+      }
+      return 0;
+    });
+
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
