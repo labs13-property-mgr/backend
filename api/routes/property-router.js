@@ -29,6 +29,8 @@ var dynamicSort = property => {
   };
 };
 
+property.sort(dynamicSort("name"));
+
 // change get router to return list of properties alphabetically
 
 // router.get("/", async (req, res) => {
