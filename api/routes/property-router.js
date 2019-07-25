@@ -7,28 +7,29 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const property = await db.find();
-    property.sort(dynamicSort("property_name"));
+
+    const dynamicSort = property => {
+      var sortOrder = 1;
+      if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+      }
+      return function(a, b) {
+        if (sortOrder == -1) {
+          return b[property].localCompare(a[property]);
+        } else {
+          return a[property].localCompare(b[property]);
+        }
+      };
+    };
+
+    property.sort(dynamicSort("-property_name"));
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
   }
 });
-
-var dynamicSort = property => {
-  var sortOrder = 1;
-  if (property[0] === "-") {
-    sortOrder = -1;
-    property = property.substr(1);
-  }
-  return function(a, b) {
-    if (sortOrder == -1) {
-      return b[property].localCompare(a[property]);
-    } else {
-      return a[property].localCompare(b[property]);
-    }
-  };
-};
 
 // change get router to return list of properties alphabetically
 
