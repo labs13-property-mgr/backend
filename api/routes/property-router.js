@@ -14,6 +14,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+var dynamicSort = property => {
+  var sortOrder = 1;
+  if (property[0] === "-") {
+    sortOrder = -1;
+    property = property.substr(1);
+  }
+  return function(a, b) {
+    if (sortOrder == -1) {
+      return b[property].localCompare(a[property]);
+    } else {
+      return a[property].localCompare(b[property]);
+    }
+  };
+};
+
 // change get router to return list of properties alphabetically
 
 // router.get("/", async (req, res) => {
