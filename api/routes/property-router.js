@@ -7,6 +7,7 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const property = await db.find();
+    property.sort(dynamicSort("property_name"));
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
@@ -28,8 +29,6 @@ var dynamicSort = property => {
     }
   };
 };
-
-property.sort(dynamicSort("name"));
 
 // change get router to return list of properties alphabetically
 

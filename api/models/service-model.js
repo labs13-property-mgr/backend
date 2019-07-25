@@ -5,8 +5,7 @@ module.exports = {
   find,
   findById,
   deleteService,
-  update,
-  addHistory
+  update
 };
 
 function add(service) {
