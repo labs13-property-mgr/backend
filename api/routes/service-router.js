@@ -37,7 +37,20 @@ router.get("/:id", async (req, res) => {
 
 //====================get service request owner information
 router.get("/:id/ownerinfo", since (req, res) => {
-
+const id = req.params.id;
+  db.findOwnerbyService(id)
+    .then(services => {
+      if (services) {
+        res.status(200).json(services);
+      } else {
+        res.status(404).json({
+          Message: `The owner seem to be missing...maybe they don't work here?`
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ message: `The owner seems to be missing try again` });
+    });
 });
 
 //===================delete
