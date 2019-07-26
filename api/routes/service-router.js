@@ -35,6 +35,13 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//====================get service request owner information
+router.get("/:id/ownerinfo", since (req, res) => {
+
+});
+
+//===================delete
+
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
