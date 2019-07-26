@@ -1,4 +1,5 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 const configureMiddleware = require('./middleware/serversetup')
 
 const client = require('twilio')(
@@ -8,9 +9,29 @@ const client = require('twilio')(
 
 const server = express()
 configureMiddleware(server)
+server.use(bodyParser.urlencoded({ extended: false}));
+server.use(bodyParser.json());
 
 server.get('/', async (req, res) => {
   await res.status(200).json({ message: 'Server running....' })
+})
+
+
+server.post('/api/message', (req, res) => {
+    res.header('Content-Type', 'application/json');
+    client.messages
+        .create({
+            from: process.env.TWILIO_PHONE_NUMBER,
+            to: req.body.to,
+            body: req.body.body
+        })
+        .then(() => {
+            res.send(JSON.stringify({ success: true }));
+        })
+        .catch(err => {
+            console.log(err);
+            res.send(JSON.stringify({ success: false }));
+        });
 })
 
 module.exports = server
