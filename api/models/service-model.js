@@ -44,6 +44,6 @@ function update(id, changes) {
     .update(changes);
 }
 
-async function findOwnerByService(id) {
+async function findOwnerByService(uid) {
   return await db('user').where({ uid });
 }
