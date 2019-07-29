@@ -5,7 +5,8 @@ module.exports = {
   find,
   findById,
   deleteService,
-  update
+  update,
+  findOwnerByService
 };
 
 function add(service) {
@@ -42,4 +43,8 @@ function update(id, changes) {
   return db("service_orders")
     .where({ id })
     .update(changes);
+}
+
+async function findOwnerByService(uid) {
+  return await db('users').where({ uid });
 }
