@@ -5,7 +5,8 @@ module.exports = {
   find,
   findById,
   deleteService,
-  update
+  update,
+  findOwnerByService
 };
 
 function add(service) {
@@ -43,3 +44,8 @@ function update(id, changes) {
     .where({ id })
     .update(changes);
 }
+
+async function findOwnerByService(uid) {
+  return await db('users').where({ uid });
+}
+//switching to new branch

@@ -35,6 +35,20 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+//====================get service request owner information
+router.get("/:id/ownerinfo", async (req, res) => {
+  const id = req.params.id;
+  const service = await db.findById(id)
+  try {
+    const owner = await db.findOwnerByService(service.owner_id);
+    return res.status(200).json(owner);
+  } catch (err) {
+    console.error({ code: err.code, message: err.message });
+  }
+  });
+  
+   //===================delete
+  
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
   try {
