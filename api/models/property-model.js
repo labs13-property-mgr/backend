@@ -9,6 +9,7 @@ module.exports = {
   remove,
   update,
   findServByProp,
+  findServHisByProp,
   findImages
   // findTenantsByProperty,
 };
@@ -20,7 +21,6 @@ function add(property) {
 async function find() {
   const prop = await db("property");
   return prop;
-
 }
 
 function findImages() {
@@ -33,9 +33,7 @@ function findImages() {
       "i.id as property_image_id",
       "i.image_url as image_url"
     ]);
-
 }
-
 
 function findTenants() {
   return db("property as p")
@@ -95,4 +93,8 @@ function findTenantsByProperty(filter) {
 
 async function findServByProp(property_id) {
   return await db("service_orders").where({ property_id });
+}
+
+async function findServHisByProp(property_id) {
+  return await db("service_history").where({ property_id });
 }

@@ -7,12 +7,43 @@ router.use(express.json());
 router.get("/", async (req, res) => {
   try {
     const property = await db.find();
+
+    // const dynamicSort = property => {
+    //   var sortOrder = 1;
+    //   if (property[0] === "-") {
+    //     sortOrder = -1;
+    //     property = property.substr(1);
+    //   }
+    //   return function(a, b) {
+    //     if (sortOrder == -1) {
+    //       return b[property].localCompare(a[property]);
+    //     } else {
+    //       return a[property].localCompare(b[property]);
+    //     }
+    //   };
+    // };
+
+    // property.sort(dynamicSort("-property_name"));
+
+    // secondary sorty option
+    property.sort(function(a, b) {
+      if (a.property_name < b.property_name) {
+        return -1;
+      }
+      if (a.property_name > b.property_name) {
+        return 1;
+      }
+      return 0;
+    });
+
     res.status(200).json(property);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
   }
 });
+
+// change get router to return list of properties alphabetically
 
 // router.get("/", async (req, res) => {
 //   try {
@@ -110,7 +141,7 @@ router.put("/:id", async (req, res) => {
     } else {
       res.status(404).json({ message: "property ID not found" });
     }
-  } catch ({message}) {
+  } catch ({ message }) {
     res.status(500).json({ message });
   }
 });
@@ -175,5 +206,25 @@ router.get("/:id/services", async (req, res) => {
         .json({ message: `The services seems to be missing try again` });
     });
 });
+
+//get service history by property id
+// router.get("/:id/serviceHistory", (req, res) => {
+//   const property_id = req.params.id;
+//   db.findServHisByProp(property_id)
+//     .then(services => {
+//       if (services) {
+//         res.status(200).json(services);
+//       } else {
+//         res.status(404).json({
+//           Message: `A history of the properties services are missing`
+//         });
+//       }
+//     })
+//     .catch(error => {
+//       res
+//         .status(500)
+//         .json({ message: `The services seem to be missing try again` });
+//     });
+// });
 
 module.exports = router;
