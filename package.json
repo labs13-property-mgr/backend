@@ -25,7 +25,8 @@
 	"devDependencies": {
 		"cross-env": "^5.2.0",
 		"nodemon": "^1.19.1",
-		"supertest": "^3.3.0"
+		"supertest": "^3.3.0",
+		"twilio": "^3.33.2"
 	},
 	"dependencies": {
 		"@google-cloud/storage": "^2.5.0",
