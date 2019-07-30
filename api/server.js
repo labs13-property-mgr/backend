@@ -12,15 +12,21 @@ configureMiddleware(server)
 server.use(bodyParser.urlencoded({ extended: false }))
 server.use(bodyParser.json())
 
-server.post('/', (req, res) => {
-  res.header('Content-Type', 'application/json')
+server.post('/api/message', (req, res) => {
+  res.header('Content-Type', 'application/json');
   client.messages
       .create({
-          from: '+17372154303',
-          to: '+15129664123',
-          body: 'This is a test message from RentMe App'
+          from: process.env.TWILIO_PHONE_NUMBER,
+          to: req.body.to,
+          body: req.body.body
       })
-      .then(message => console.log(message.sid))
+      .then(() => {
+          res.send(JSON.stringify({ success: true }));
+      })
+      .catch(err => {
+          console.log(err);
+          res.send(JSON.stringify({ success: false }));
+      });
 })
 
 server.get('/', async (req, res) => {
