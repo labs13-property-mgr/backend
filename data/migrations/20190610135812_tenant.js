@@ -6,11 +6,11 @@ exports.up = function(knex, Promise) {
     tenant.string("Last_name", 50);
     tenant.string("phone", 20);
     tenant.string("email", 50).unique();
-    tenant.string("Spouse Name", 100);
-    tenant.string("additional adult name");
+    tenant.string("Dependent_1", 100);
     tenant.integer("number in household", 100).defaultTo(0);
-    tenant.string("child name", 100);
+    tenant.string("Dependent_2", 100);
     tenant.string("notes", 500);
+    tenant.string("Emergency_Contact_Name", 100);
     tenant.string("emergency contact", 100);
     tenant.boolean("active_tenant");
     tenant
