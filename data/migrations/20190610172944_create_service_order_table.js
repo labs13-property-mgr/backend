@@ -3,7 +3,7 @@ exports.up = function(knex, Promise) {
     tbl.increments(); //Service Orders Primary Key
 
     tbl.string("date_created", 100);
-    tbl.string("request_name", 150).notNullable();
+    tbl.string("body", 150).notNullable();
     tbl.string("request_description", 1500).notNullable();
     tbl.string("status", 100); //for status bar
     tbl.string("notes", 1500);
@@ -32,7 +32,15 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE"); // Foreign Key linking user table
+    tbl
+      .string("owner_phone")
+      .unsigned()
+      .references("owner_phone")
+      .inTable("tenant")
+      .onDelete("CASCADE")
+      .onUpdate("CASCADE");
     tbl.boolean("received"); //flags when owner/manager opens service card
+
   });
 };
 
