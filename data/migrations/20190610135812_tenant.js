@@ -30,7 +30,7 @@ exports.up = function(knex, Promise) {
       .references("phone")
       .inTable("users")
       .onDelete("CASCADE")
-      .onUpdate("CASCADE");
+      .onUpdate("CASCADE");//testing new PR after deleting DB
   });
 };
 
