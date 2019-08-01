@@ -26,40 +26,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-// change get router to return list of properties alphabetically
-
-// router.get("/", async (req, res) => {
-//   try {
-//     const properties = await db.find();
-
-//     const propertyWithImages = await db.findImages();
-//     if (properties) {
-//       // const data = properties.map(property => {
-//       //   return property;
-
-//       //   // return property;
-//       // });
-//       const datawithImages = propertyWithImages.map(p => {
-//         return {
-//           ...p,
-//           images: properties.find(pt => {
-
-//             p.property_id === pt.id;
-//           })
-//         };
-//       });
-
-//       res.status(200).json(datawithImages);
-
-//     } else {
-//       next({ code: 400 });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json(error.message);
-//   }
-// });
-
 router.get("/propertieswithtenants", async (req, res, next) => {
   try {
     const properties = await db.find();
