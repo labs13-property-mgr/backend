@@ -25,7 +25,7 @@ exports.up = function(knex, Promise) {
       .inTable("users")
       .onDelete("CASCADE")
       .onUpdate("CASCADE");
-    tenant.string("owner_phone");//testing new PR after deleting DB
+    tenant.string("owner_phone", 20);//testing new PR after deleting DB
   });
 };
 
