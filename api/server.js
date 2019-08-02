@@ -23,7 +23,8 @@ server.post('/api/message', (req, res) => {
       .create({
           from: process.env.TWILIO_PHONE_NUMBER,
           to: req.body.to,
-          body: req.body.body
+          body: "MESSAGE ALERT:" + " " + req.body.body + " " + "was reported through the RentMe-App" 
+                  + " " + "http://www.rentme-app.com"
       })
       .then(() => {
           res.send(JSON.stringify({ success: true }));
