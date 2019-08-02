@@ -9,7 +9,7 @@ router.get("/", async (req, res) => {
     const property = await db.find();
 
     // secondary sorty option
-    property.sort(function(a, b) {
+    const newArray = await property.sort(function(a, b) {
       if (a.property_name < b.property_name) {
         return -1;
       }
@@ -19,46 +19,12 @@ router.get("/", async (req, res) => {
       return 0;
     });
 
-    res.status(200).json(property);
+    res.status(200).json(newArray);
   } catch (error) {
     console.log(error);
     res.status(500).json(error.message);
   }
 });
-
-// change get router to return list of properties alphabetically
-
-// router.get("/", async (req, res) => {
-//   try {
-//     const properties = await db.find();
-
-//     const propertyWithImages = await db.findImages();
-//     if (properties) {
-//       // const data = properties.map(property => {
-//       //   return property;
-
-//       //   // return property;
-//       // });
-//       const datawithImages = propertyWithImages.map(p => {
-//         return {
-//           ...p,
-//           images: properties.find(pt => {
-
-//             p.property_id === pt.id;
-//           })
-//         };
-//       });
-
-//       res.status(200).json(datawithImages);
-
-//     } else {
-//       next({ code: 400 });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json(error.message);
-//   }
-// });
 
 router.get("/propertieswithtenants", async (req, res, next) => {
   try {
