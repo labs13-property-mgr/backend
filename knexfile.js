@@ -31,3 +31,5 @@ module.exports = {
     }
   }
 };
+
+//use the (npx knex migrate:rollback --env production) to rollback and migrate latest on heroku using the configurations in this knex file 
